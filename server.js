@@ -7,6 +7,7 @@ const app = express();
 const cors = require("cors");
 
 // Define routes
+// TODO
 
 // Middleware
 app.use(express.urlencoded({ limit: "10mb", extended: false }));
@@ -20,6 +21,7 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 
 // Utilize routes
+// TODO
 
 const db = mongoose.connection;
 db.on("error", err => console.error(err));
