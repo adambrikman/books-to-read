@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-class AddAuthor extends Component {
+class EditAuthor extends Component {
   constructor(props) {
     super(props);
 
@@ -11,6 +11,19 @@ class AddAuthor extends Component {
     this.state = {
       name: ""
     };
+  }
+
+  componentDidMount() {
+    axios
+      .get("http://localhost:3000/authors/" + this.props.match.params.id)
+      .then(res => {
+        this.setState({
+          name: res.data.name
+        });
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
   }
 
   onChangeName(e) {
@@ -26,7 +39,10 @@ class AddAuthor extends Component {
     };
 
     axios
-      .post("http://localhost:3000/authors/new", author)
+      .post(
+        "http://localhost:3000/authors/edit/" + this.props.match.parms.id,
+        author
+      )
       .then(res => console.log(res.data));
 
     this.setState({
@@ -37,7 +53,7 @@ class AddAuthor extends Component {
   render() {
     return (
       <div>
-        <h1>Add an Author</h1>
+        <h1>Edit Author Name</h1>
 
         <form onSubmit={this.onSubmit}>
           <label htmlFor="author">Name: </label>
@@ -50,7 +66,7 @@ class AddAuthor extends Component {
           />
           <div>
             <a href="/">Cancel</a>
-            <button type="submit">Add Author</button>
+            <button type="submit">Edit Author</button>
           </div>
         </form>
       </div>
@@ -58,4 +74,4 @@ class AddAuthor extends Component {
   }
 }
 
-export default AddAuthor;
+export default EditAuthor;
