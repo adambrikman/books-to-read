@@ -6,8 +6,8 @@ router.get("/", async (req, res) => {
   const authors = await Author.find({});
   try {
     res.json(authors);
-  } catch {
-    res.redirect("/");
+  } catch (e) {
+    res.status(400).json("Error " + e);
   }
 });
 
@@ -18,8 +18,8 @@ router.post("/new", async (req, res) => {
     const newAuthor = await new Author({ name });
     newAuthor.save();
     res.json("Author added!");
-  } catch (e) {
-    res.status(400).json("Error: " + e);
+  } catch {
+    res.json("Error: Could not add author");
   }
 });
 
@@ -28,20 +28,32 @@ router.get("/:id", async (req, res) => {
   const author = await Author.findById(req.params.id);
   try {
     res.json(author);
-  } catch {
-    res.redirect("/");
+  } catch (e) {
+    res.status(400).json("Error " + e);
+  }
+});
+
+// Delete author
+router.delete("/:id", async (req, res) => {
+  let author;
+
+  try {
+    const author = await Author.findById(req.params.id);
+    author.remove();
+  } catch (e) {
+    res.json("Error: Could not delete author");
   }
 });
 
 // Update author
-router.put("/:id", async (req, res) => {
+router.put("/edit/:id", async (req, res) => {
   try {
     const author = await Author.findById(req.params.id);
     author.name = req.body.name;
     author.save();
     res.json("Author updated!");
-  } catch (e) {
-    res.status(400).json("Error: " + e);
+  } catch {
+    res.json("Error: Could not update author");
   }
 });
 

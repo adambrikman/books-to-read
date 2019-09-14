@@ -1,23 +1,12 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import AuthorTable from "./AuthorTable";
 
-const AuthorTable = props => (
-  <tr>
-    <td>{props.author.name}</td>
-    <td>
-      <Link to={"/authors/edit/" + props.author._id}>Edit</Link>
-      &nbsp;
-      <button onClick={() => props.deleteAuthor(props.author._id)}>
-        Delete
-      </button>
-    </td>
-  </tr>
-);
-
-class AuthorsList extends Component {
+class AuthorsView extends Component {
   constructor(props) {
     super(props);
+
+    this.deleteAuthor = this.deleteAuthor.bind(this);
 
     this.state = {
       authors: []
@@ -30,15 +19,24 @@ class AuthorsList extends Component {
       .then(res => {
         this.setState({ authors: res.data });
       })
-      .catch(e => {
-        console.log(e);
+      .catch(() => {
+        if (this.state.authors == null) {
+          window.location("/");
+        }
       });
   }
 
   deleteAuthor(id) {
     axios
       .delete("http://localhost:3000/authors/" + id)
-      .then(res => console.log(res.data));
+      .then(res => console.log(res.data))
+      .catch(() => {
+        if (props.author._id == null) {
+          window.location = "/";
+        } else {
+          window.location = "/authors/" + id;
+        }
+      });
 
     this.setState({
       authors: this.state.authors.filter(author => author._id !== id)
@@ -79,4 +77,4 @@ class AuthorsList extends Component {
   }
 }
 
-export default AuthorsList;
+export default AuthorsView;

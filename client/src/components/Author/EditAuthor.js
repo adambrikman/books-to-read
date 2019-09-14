@@ -21,8 +21,8 @@ class EditAuthor extends Component {
           name: res.data.name
         });
       })
-      .catch(function(err) {
-        console.log(err);
+      .catch(() => {
+        window.location("/authors");
       });
   }
 
@@ -34,20 +34,24 @@ class EditAuthor extends Component {
 
   onSubmit(e) {
     e.preventDefault();
+
     const author = {
       name: this.state.name
     };
 
     axios
-      .post(
-        "http://localhost:3000/authors/edit/" + this.props.match.parms.id,
+      .put(
+        "http://localhost:3000/authors/edit/" + this.props.match.params.id,
         author
       )
-      .then(res => console.log(res.data));
+      .then(res => console.log(res.data))
+      .catch(e => {
+        if (this.state.name == null) {
+          window.location = "/";
+        }
+      });
 
-    this.setState({
-      name: ""
-    });
+    window.location = "/authors";
   }
 
   render() {
@@ -65,7 +69,7 @@ class EditAuthor extends Component {
             required
           />
           <div>
-            <a href="/">Cancel</a>
+            <a href="/authors/">Cancel</a>
             <button type="submit">Edit Author</button>
           </div>
         </form>
