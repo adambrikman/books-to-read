@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const Book = require("../models/book");
-const imageMimeTypes = ['image/jpeg', 'image/png', 'images/gif']
+const imageMimeTypes = ["image/jpeg", "image/png", "images/gif"];
 
 // View all books
 router.get("/", async (req, res) => {
@@ -14,21 +14,25 @@ router.get("/", async (req, res) => {
 
 // Add book
 router.post("/new", async (req, res) => {
-
-    const newBook = new Book({ 
-        title = req.body.title,
-        author = req.body.author,
-        publishDate = req.body.publishDate,
-        unread = req.body.unread,
-        pageCount = req.body.pageCount,
-        description = req.body.description
-    });
-    saveCover(book, req.body.cover)
+  const book = new Book({
+    title: req.body.title,
+    author: req.body.author,
+    publishDate: new Date(req.body.publishDate),
+    // coverImage: req.body.cover,
+    // coverImageType: req.body.coverImageType,
+    unread: req.body.unread,
+    pageCount: req.body.pageCount,
+    description: req.body.description
+  });
+  if (req.body.cover != null && req.body.cover !== "") {
+    saveCover(book, req.body.cover);
+  }
 
   try {
-    await newBook.save();
+    await book.save();
     res.json("Book added!");
-  } catch {
+  } catch (e) {
+    console.log(e);
     res.json("Error: Could not add book");
   }
 });
@@ -57,20 +61,19 @@ router.delete("/:id", async (req, res) => {
 
 // Update book
 router.put("/edit/:id", async (req, res) => {
-
-    let book
+  let book;
 
   try {
-    book = await Book.findById(req.params.id)
+    book = await Book.findById(req.params.id);
     book.title = req.body.title;
     book.author = req.body.author;
     book.publishDate = req.body.publishDate;
-    book.unread = req.body.unread
-    book.pageCount = req.body.pageCount
-    book.description = req.body.description
+    book.unread = req.body.unread;
+    book.pageCount = req.body.pageCount;
+    book.description = req.body.description;
 
-    if (req.body.cover != null && req.body.cover !== '') {
-        saveCover(book, req.body.cover)
+    if (req.body.cover != null && req.body.cover !== "") {
+      saveCover(book, req.body.cover);
     }
 
     await book.save();
@@ -81,12 +84,12 @@ router.put("/edit/:id", async (req, res) => {
 });
 
 function saveCover(book, coverEncoded) {
-    if (coverEncoded == null) return
-    const cover = JSON.parse(coverEncoded)
-    if (cover != null && imageMimeTypes.includes(cover.type)) {
-        book.coverImage = new Buffer.from(cover.data, 'base64')
-        book.coverImageType = cover.type
-    }
+  if (coverEncoded == null) return;
+  const cover = JSON.parse(coverEncoded);
+  if (cover != null && imageMimeTypes.includes(cover.type)) {
+    book.coverImage = new Buffer.from(cover.data, "base64");
+    book.coverImageType = cover.type;
+  }
 }
 
 module.exports = router;

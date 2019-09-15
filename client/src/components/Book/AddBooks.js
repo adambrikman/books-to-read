@@ -5,35 +5,48 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-// Filepond
-// import { FilePond, registerPlugin } from "react-filepond";
-// import "filepond/dist/filepond.min.css";
-// import FilePondPluginImagePreview from "filepond-plugin-image-preview";
-// import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
-// registerPlugin(FilePondPluginImagePreview);
+// Import React FilePond
+import { FilePond, registerPlugin } from "react-filepond";
+
+// Import FilePond styles
+import "filepond/dist/filepond.min.css";
+
+// Import Encode, Image Preview & Image Resize
+import FilePondPluginFileEncode from "filepond-plugin-file-encode";
+import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
+import FilePondPluginImageResize from "filepond-plugin-image-resize";
+
+// Register plugins
+registerPlugin(FilePondPluginFileEncode);
+registerPlugin(FilePondPluginImagePreview);
+registerPlugin(FilePondPluginImageResize);
 
 class AddBooks extends Component {
   constructor(props) {
     super(props);
 
-    this.onChangeAuthorName = this.onChangeAuthorName.bind(this);
+    this.onChangeAuthor = this.onChangeAuthor.bind(this);
     this.onChangeTitle = this.onChangeTitle.bind(this);
     this.onChangePublishDate = this.onChangePublishDate.bind(this);
     this.onChangeUnread = this.onChangeUnread.bind(this);
     this.onChangePageCount = this.onChangePageCount.bind(this);
     this.onChangeCover = this.onChangeCover.bind(this);
+    this.onChangeCoverImageType = this.onChangeCoverImageType.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
-      authorName: "",
+      author: "",
       title: "",
       publishDate: new Date(),
-      unread: "Yes",
+      unread: true,
       pageCount: "",
       cover: "",
+      coverImageType: "",
       description: "",
-      authors: []
+      authors: [],
+      booleans: [{ value: "Yes", id: true }, { value: "No", id: false }]
     };
   }
 
@@ -41,16 +54,16 @@ class AddBooks extends Component {
     axios.get("http://localhost:3000/authors/").then(res => {
       if (res.data.length > 0) {
         this.setState({
-          authors: res.data.map(author => author.name),
-          authorName: res.data[0].name
+          authors: res.data,
+          author: res.data[0]._id
         });
       }
     });
   }
 
-  onChangeAuthorName(e) {
+  onChangeAuthor(e) {
     this.setState({
-      authorName: e.target.value
+      author: e.target.value
     });
   }
 
@@ -84,20 +97,32 @@ class AddBooks extends Component {
     });
   }
 
+  onChangeCoverImageType(e) {
+    this.setState({
+      cover: e.target.value
+    });
+  }
+
   onChangeDescription(e) {
     this.setState({
       description: e.target.value
     });
   }
 
+  handleInit() {
+    console.log("FilePond instance has initialised", this.pond);
+  }
+
   onSubmit(e) {
     e.preventDefault();
     const book = {
-      authorName: this.state.authorName,
+      author: this.state.author,
       title: this.state.title,
       publishDate: this.state.publishDate,
+      unread: this.state.unread,
       pageCount: this.state.pageCount,
       cover: this.state.cover,
+      coverImageType: this.state.coverImageType,
       description: this.state.description
     };
 
@@ -127,14 +152,14 @@ class AddBooks extends Component {
           <label>Author: </label>
           <div>
             <select
-              value={this.state.authorName}
-              onChange={this.onChangeAuthorName}
+              value={this.state.author}
+              onChange={this.onChangeAuthor}
               required
             >
               {this.state.authors.map(function(name) {
                 return (
-                  <option key={name} value={name}>
-                    {name}
+                  <option key={name._id} value={name._id}>
+                    {name.name}
                   </option>
                 );
               })}
@@ -156,14 +181,14 @@ class AddBooks extends Component {
               onChange={this.onChangeUnread}
               required
             >
-              return(
-              <option key="true" value="true">
-                Yes
-              </option>
-              <option key="false" value="false">
-                No
-              </option>
-              )
+              {this.state.booleans.map(function(bool) {
+                return (
+                  <option key={bool.id} value={bool.id}>
+                    {bool.value}
+                  </option>
+                );
+              })}
+              ;
             </select>
           </div>
 
@@ -179,8 +204,26 @@ class AddBooks extends Component {
           </div>
 
           <label>Cover</label>
+
           <div>
-            <input type="file" name="cover" className="filepond" />
+            <FilePond
+              ref={ref => (this.pond = ref)}
+              cover={this.state.cover}
+              allowFileEncode="true"
+              oninit={() => this.handleInit()}
+              imageResizeTargetWidth="100"
+              imageResizeTargetHeight="150"
+              onChange={this.onChangeCover}
+              onChange={this.onChangeCoverImageType}
+              onaddfile={(error, file) => {
+                console.log(file);
+                // Set current file objects to this.state
+                this.setState({
+                  cover: file.getFileEncodeBase64String(),
+                  coverImageType: file.fileType
+                });
+              }}
+            ></FilePond>
           </div>
 
           <label>Description: </label>
