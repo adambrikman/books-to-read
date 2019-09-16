@@ -5,10 +5,8 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-// Import React FilePond
+// Import React FilePond & styles
 import { FilePond, registerPlugin } from "react-filepond";
-
-// Import FilePond styles
 import "filepond/dist/filepond.min.css";
 
 // Import Encode, Image Preview & Image Resize
@@ -16,11 +14,13 @@ import FilePondPluginFileEncode from "filepond-plugin-file-encode";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
 import FilePondPluginImageResize from "filepond-plugin-image-resize";
+import FilePondPluginImageTransform from "filepond-plugin-image-transform";
 
 // Register plugins
 registerPlugin(FilePondPluginFileEncode);
 registerPlugin(FilePondPluginImagePreview);
 registerPlugin(FilePondPluginImageResize);
+registerPlugin(FilePondPluginImageTransform);
 
 class AddBooks extends Component {
   constructor(props) {
@@ -31,8 +31,6 @@ class AddBooks extends Component {
     this.onChangePublishDate = this.onChangePublishDate.bind(this);
     this.onChangeUnread = this.onChangeUnread.bind(this);
     this.onChangePageCount = this.onChangePageCount.bind(this);
-    this.onChangeCover = this.onChangeCover.bind(this);
-    this.onChangeCoverImageType = this.onChangeCoverImageType.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
@@ -91,26 +89,10 @@ class AddBooks extends Component {
     });
   }
 
-  onChangeCover(e) {
-    this.setState({
-      cover: e.target.value
-    });
-  }
-
-  onChangeCoverImageType(e) {
-    this.setState({
-      cover: e.target.value
-    });
-  }
-
   onChangeDescription(e) {
     this.setState({
       description: e.target.value
     });
-  }
-
-  handleInit() {
-    console.log("FilePond instance has initialised", this.pond);
   }
 
   onSubmit(e) {
@@ -131,12 +113,23 @@ class AddBooks extends Component {
     axios
       .post("http://localhost:3000/books/new", book)
       .then(res => console.log(res.data));
+
+    this.setState({
+      author: "",
+      title: "",
+      publishDate: new Date(),
+      unread: true,
+      pageCount: "",
+      cover: "",
+      coverImageType: "",
+      description: ""
+    });
   }
 
   render() {
     return (
       <div>
-        <h1>Add an Author</h1>
+        <h1>Add a Book</h1>
 
         <form onSubmit={this.onSubmit}>
           <label>Title</label>
@@ -207,17 +200,15 @@ class AddBooks extends Component {
 
           <div>
             <FilePond
-              ref={ref => (this.pond = ref)}
-              cover={this.state.cover}
-              allowFileEncode="true"
-              oninit={() => this.handleInit()}
+              stylePanelAspectRatio=".1 / 1"
               imageResizeTargetWidth="100"
               imageResizeTargetHeight="150"
-              onChange={this.onChangeCover}
-              onChange={this.onChangeCoverImageType}
-              onaddfile={(error, file) => {
+              onaddfile={(err, file) => {
+                if (err) {
+                  console.error(err);
+                }
                 console.log(file);
-                // Set current file objects to this.state
+
                 this.setState({
                   cover: file.getFileEncodeBase64String(),
                   coverImageType: file.fileType

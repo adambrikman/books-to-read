@@ -6,6 +6,8 @@ const AuthorTable = props => (
     <td>{props.author.name}</td>
 
     <td>
+      <Link to={"/authors/" + props.author._id}>View</Link>
+      &nbsp;
       <Link to={"/authors/edit/" + props.author._id}>Edit</Link>
       &nbsp;
       <button onClick={() => props.deleteAuthor(props.author._id)}>

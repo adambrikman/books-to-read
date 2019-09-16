@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { render } from "react-dom";
 
 // Import components
-import Navbar from "./components/Navbar";
+import Navbar from "./components/utilities/Navbar";
 import Index from "./components/Index";
 import AuthorsView from "./components/Author/AuthorsView";
 import AddAuthor from "./components/Author/AddAuthor";
@@ -33,7 +33,7 @@ function App() {
         <Route path="/books/finished" component={FinishedBooksList} />
         <Route path="/books/new" component={AddBooks} />
         <Route path="/books/:id" component={BookPage} />
-        <Route path="/books/:id/edit" component={EditBook} />
+        <Route path="/books/edit/:id" component={EditBook} />
       </Switch>
     </Router>
   );

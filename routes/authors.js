@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Author = require("../models/author");
+const Book = require("../models/book");
 
 // View all authors
 router.get("/", async (req, res) => {
@@ -26,10 +27,19 @@ router.post("/new", async (req, res) => {
 // View individual author
 router.get("/:id", async (req, res) => {
   const author = await Author.findById(req.params.id);
+  const books = await Book.find({ author: author.id })
+    .limit(6)
+    .exec();
   try {
-    res.json(author);
+    res.json({
+      author: author,
+      books: books
+    });
   } catch (e) {
-    res.status(400).json("Error " + e);
+    res.json({
+      author: author,
+      books: []
+    });
   }
 });
 

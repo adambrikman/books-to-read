@@ -18,11 +18,8 @@ class EditAuthor extends Component {
       .get("http://localhost:3000/authors/" + this.props.match.params.id)
       .then(res => {
         this.setState({
-          name: res.data.name
+          name: res.data.author.name
         });
-      })
-      .catch(() => {
-        window.location("/authors");
       });
   }
 
@@ -44,14 +41,7 @@ class EditAuthor extends Component {
         "http://localhost:3000/authors/edit/" + this.props.match.params.id,
         author
       )
-      .then(res => console.log(res.data))
-      .catch(e => {
-        if (this.state.name == null) {
-          window.location = "/";
-        }
-      });
-
-    window.location = "/authors";
+      .then(res => console.log(res.data));
   }
 
   render() {

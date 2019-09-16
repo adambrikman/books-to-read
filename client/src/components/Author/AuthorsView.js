@@ -14,29 +14,15 @@ class AuthorsView extends Component {
   }
 
   componentDidMount() {
-    axios
-      .get("http://localhost:3000/authors/")
-      .then(res => {
-        this.setState({ authors: res.data });
-      })
-      .catch(() => {
-        if (this.state.authors == null) {
-          window.location("/");
-        }
-      });
+    axios.get("http://localhost:3000/authors/").then(res => {
+      this.setState({ authors: res.data });
+    });
   }
 
   deleteAuthor(id) {
     axios
       .delete("http://localhost:3000/authors/" + id)
-      .then(res => console.log(res.data))
-      .catch(() => {
-        if (props.author._id == null) {
-          window.location = "/";
-        } else {
-          window.location = "/authors/" + id;
-        }
-      });
+      .then(res => console.log(res.data));
 
     this.setState({
       authors: this.state.authors.filter(author => author._id !== id)

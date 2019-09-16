@@ -18,15 +18,11 @@ router.post("/new", async (req, res) => {
     title: req.body.title,
     author: req.body.author,
     publishDate: new Date(req.body.publishDate),
-    // coverImage: req.body.cover,
-    // coverImageType: req.body.coverImageType,
     unread: req.body.unread,
     pageCount: req.body.pageCount,
     description: req.body.description
   });
-  if (req.body.cover != null && req.body.cover !== "") {
-    saveCover(book, req.body.cover);
-  }
+  saveCover(book, req.body.cover, req.body.coverImageType);
 
   try {
     await book.save();
@@ -39,7 +35,9 @@ router.post("/new", async (req, res) => {
 
 // View individual book
 router.get("/:id", async (req, res) => {
-  const book = await Book.findById(req.params.id);
+  const book = await Book.findById(req.params.id)
+    .populate("author")
+    .exec();
   try {
     res.json(book);
   } catch (e) {
@@ -83,12 +81,11 @@ router.put("/edit/:id", async (req, res) => {
   }
 });
 
-function saveCover(book, coverEncoded) {
+function saveCover(book, coverEncoded, coverType) {
   if (coverEncoded == null) return;
-  const cover = JSON.parse(coverEncoded);
-  if (cover != null && imageMimeTypes.includes(cover.type)) {
-    book.coverImage = new Buffer.from(cover.data, "base64");
-    book.coverImageType = cover.type;
+  else if (coverEncoded != null && imageMimeTypes.includes(coverType)) {
+    book.coverImage = new Buffer.from(coverEncoded, "base64");
+    book.coverImageType = coverType;
   }
 }
 
