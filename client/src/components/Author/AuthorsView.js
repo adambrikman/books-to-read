@@ -9,24 +9,34 @@ class AuthorsView extends Component {
     this.deleteAuthor = this.deleteAuthor.bind(this);
 
     this.state = {
-      authors: []
+      authors: [],
+      books: []
     };
   }
 
   componentDidMount() {
+    let authorIdsWithBooks = [];
     axios.get("http://localhost:3000/authors/").then(res => {
       this.setState({ authors: res.data });
     });
+    axios
+      .get("http://localhost:3000/books/")
+      .then(res => {
+        res.data.map(authorBook => {
+          authorIdsWithBooks.push(authorBook.author);
+        });
+      })
+      .then(this.setState({ books: authorIdsWithBooks }));
   }
 
   deleteAuthor(id) {
-    axios
-      .delete("http://localhost:3000/authors/" + id)
-      .then(res => console.log(res.data));
+    if (!this.state.books.includes(id)) {
+      axios.delete("http://localhost:3000/authors/" + id);
 
-    this.setState({
-      authors: this.state.authors.filter(author => author._id !== id)
-    });
+      this.setState({
+        authors: this.state.authors.filter(author => author._id !== id)
+      });
+    }
   }
 
   authorList() {

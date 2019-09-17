@@ -46,9 +46,8 @@ router.get("/:id", async (req, res) => {
 // Delete author
 router.delete("/:id", async (req, res) => {
   let author;
-
   try {
-    const author = await Author.findById(req.params.id);
+    author = await Author.findById(req.params.id);
     author.remove();
   } catch (e) {
     res.json("Error: Could not delete author");

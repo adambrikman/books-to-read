@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 // DatePicker
@@ -22,7 +23,7 @@ registerPlugin(FilePondPluginImagePreview);
 registerPlugin(FilePondPluginImageResize);
 registerPlugin(FilePondPluginImageTransform);
 
-class AddBooks extends Component {
+class HandleBook extends Component {
   constructor(props) {
     super(props);
 
@@ -44,19 +45,46 @@ class AddBooks extends Component {
       coverImageType: "",
       description: "",
       authors: [],
-      booleans: [{ value: "Yes", id: true }, { value: "No", id: false }]
+      booleans: [{ value: "Yes", id: true }, { value: "No", id: false }],
+      paramNumbers: Object.keys(this.props.match.params).length
     };
   }
 
   componentDidMount() {
-    axios.get("http://localhost:3000/authors/").then(res => {
-      if (res.data.length > 0) {
-        this.setState({
-          authors: res.data,
-          author: res.data[0]._id
+    if (this.state.paramNumbers < 1) {
+      axios.get("http://localhost:3000/authors/").then(res => {
+        if (res.data.length > 0) {
+          this.setState({
+            authors: res.data,
+            author: res.data[0]._id
+          });
+        }
+      });
+    } else {
+      axios.get("http://localhost:3000/authors/").then(res => {
+        if (res.data.length > 0) {
+          this.setState({
+            authors: res.data,
+            author: res.data[0]._id
+          });
+        }
+      });
+      axios
+        .get("http://localhost:3000/books/" + this.props.match.params.id)
+        .then(res => {
+          if (res.data) {
+            this.setState({
+              title: res.data.title,
+              publishDate: new Date(res.data.publishDate),
+              unread: res.data.unread,
+              pageCount: res.data.pageCount,
+              cover: res.data.coverImage,
+              coverImageType: res.data.coverImageType,
+              description: res.data.description
+            });
+          }
         });
-      }
-    });
+    }
   }
 
   onChangeAuthor(e) {
@@ -95,6 +123,30 @@ class AddBooks extends Component {
     });
   }
 
+  cancelForm() {
+    if (this.state.paramNumbers < 1) {
+      return <Link to={"/"}>Cancel</Link>;
+    } else {
+      return <Link to={"/books/" + this.props.match.params.id}>Cancel</Link>;
+    }
+  }
+
+  handlePageName() {
+    if (this.state.paramNumbers < 1) {
+      return <h1>Add a book</h1>;
+    } else {
+      return <h1>Edit book</h1>;
+    }
+  }
+
+  handleSubmitBtn() {
+    if (this.state.paramNumbers < 1) {
+      return <button type="submit">Add Book</button>;
+    } else {
+      return <button type="submit">Edit Book</button>;
+    }
+  }
+
   onSubmit(e) {
     e.preventDefault();
     const book = {
@@ -108,28 +160,35 @@ class AddBooks extends Component {
       description: this.state.description
     };
 
-    console.log(book);
+    if (this.state.paramNumbers < 1) {
+      axios.post("http://localhost:3000/books/new", book).then(res => res.data);
+    } else {
+      axios
+        .put(
+          "http://localhost:3000/books/edit/" + this.props.match.params.id,
+          book
+        )
+        .then(res => console.log(res.data));
+    }
 
-    axios
-      .post("http://localhost:3000/books/new", book)
-      .then(res => console.log(res.data));
+    // this.setState({
+    //   author: "",
+    //   title: "",
+    //   publishDate: new Date(),
+    //   unread: true,
+    //   pageCount: "",
+    //   cover: "",
+    //   coverImageType: "",
+    //   description: ""
+    // });
 
-    this.setState({
-      author: "",
-      title: "",
-      publishDate: new Date(),
-      unread: true,
-      pageCount: "",
-      cover: "",
-      coverImageType: "",
-      description: ""
-    });
+    window.location = "/";
   }
 
   render() {
     return (
       <div>
-        <h1>Add a Book</h1>
+        <div>{this.handlePageName()}</div>
 
         <form onSubmit={this.onSubmit}>
           <label>Title</label>
@@ -227,8 +286,8 @@ class AddBooks extends Component {
           </div>
 
           <div>
-            <a href="/">Cancel</a>
-            <button type="submit">Add Book</button>
+            <span>{this.cancelForm()}</span>
+            <span>{this.handleSubmitBtn()}</span>
           </div>
         </form>
       </div>
@@ -236,4 +295,4 @@ class AddBooks extends Component {
   }
 }
 
-export default AddBooks;
+export default HandleBook;

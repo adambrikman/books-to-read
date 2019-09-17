@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import BookCover from "../utilities/BookCover";
+import { Link } from "react-router-dom";
 
 class BookPage extends Component {
   constructor(props) {
@@ -33,17 +34,27 @@ class BookPage extends Component {
         <p>
           Publish Date: {new Date(this.state.book.publishDate).toDateString()}{" "}
         </p>
-        <p>Need to Read: {String(this.state.book.unread)} </p>
+        <p>Need to Read: {this.state.book.unread ? "Yes" : "No"} </p>
         <p>Page Count: {this.state.book.pageCount} </p>
         <p>Description: {this.state.book.description} </p>
       </div>
     );
   }
 
+  deleteAuthor(id) {
+    axios.delete("http://localhost:3000/books/" + id);
+
+    window.location = "/";
+  }
+
   render() {
     return (
       <div>
         <div>{this.state.book && this.bookDetails()}</div>
+        <Link to={"/books/edit/" + this.props.match.params.id}>Edit</Link>
+        <button onClick={() => this.deleteAuthor(this.props.match.params.id)}>
+          Delete
+        </button>
       </div>
     );
   }

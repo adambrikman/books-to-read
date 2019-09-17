@@ -6,14 +6,12 @@ import { render } from "react-dom";
 import Navbar from "./components/utilities/Navbar";
 import Index from "./components/Index";
 import AuthorsView from "./components/Author/AuthorsView";
-import AddAuthor from "./components/Author/AddAuthor";
-import EditAuthor from "./components/Author/EditAuthor";
+import HandleAuthor from "./components/Author/HandleAuthor";
 import AuthorPage from "./components/Author/AuthorPage";
 
 import BooksToReadList from "./components/Book/BooksToReadList";
 import FinishedBooksList from "./components/Book/FinishedBooksList";
-import AddBooks from "./components/Book/AddBooks";
-import EditBook from "./components/Book/EditBook";
+import HandleBook from "./components/Book/HandleBook";
 import BookPage from "./components/Book/BookPage";
 
 function App() {
@@ -23,17 +21,26 @@ function App() {
       <br />
       <Switch>
         <Route path="/" exact component={Index} />
-
+        )}
         <Route path="/authors" exact component={AuthorsView} />
-        <Route path="/authors/new" component={AddAuthor} />
+        <Route
+          path="/authors/new"
+          component={props => (
+            <HandleAuthor timestamp={new Date().toString()} {...props} />
+          )}
+        />
         <Route path="/authors/:id" exact component={AuthorPage} />
-        <Route path="/authors/edit/:id" component={EditAuthor} />
-
+        <Route path="/authors/edit/:id" component={HandleAuthor} />
         <Route path="/books/unread" component={BooksToReadList} />
         <Route path="/books/finished" component={FinishedBooksList} />
-        <Route path="/books/new" component={AddBooks} />
-        <Route path="/books/:id" component={BookPage} />
-        <Route path="/books/edit/:id" component={EditBook} />
+        <Route
+          path="/books/new"
+          component={props => (
+            <HandleBook timestamp={new Date().toString()} {...props} />
+          )}
+        />
+        <Route path="/books/:id" exact component={BookPage} />
+        <Route path="/books/edit/:id" component={HandleBook} />
       </Switch>
     </Router>
   );

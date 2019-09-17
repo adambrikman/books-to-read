@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import BookCover from "../utilities/BookCover";
 
@@ -6,7 +7,7 @@ class AuthorPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      author: "",
+      author: {},
       books: []
     };
   }
@@ -16,7 +17,7 @@ class AuthorPage extends Component {
       .get("http://localhost:3000/authors/" + this.props.match.params.id)
       .then(res => {
         this.setState({
-          author: res.data.author.name,
+          author: res.data.author,
           books: res.data.books
         });
       });
@@ -36,13 +37,23 @@ class AuthorPage extends Component {
     });
   }
 
+  deleteAuthor(id) {
+    axios.delete("http://localhost:3000/authors/" + id);
+    return (window.location = "/authors");
+  }
+
   render() {
     return (
       <div>
         <h1>Author Page</h1>
-        <div>Name: {this.state.author} </div>
-        &nbsp;
-        <button>Delete</button>
+        <div>Name: {this.state.author.name} </div>
+
+        <Link to={"/authors/edit/" + this.state.author._id}>Edit</Link>
+
+        <button onClick={() => this.deleteAuthor(this.state.author._id)}>
+          Delete
+        </button>
+
         <div>{this.booksByAuthorLabel()}</div>
         <div>{this.bookList()}</div>
       </div>

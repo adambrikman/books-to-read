@@ -50,7 +50,7 @@ router.delete("/:id", async (req, res) => {
   let book;
 
   try {
-    const book = await Book.findById(req.params.id);
+    book = await Book.findById(req.params.id);
     await book.remove();
   } catch {
     res.json("Error: Could not delete book");
