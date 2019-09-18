@@ -7,18 +7,29 @@ class AuthorsView extends Component {
     super(props);
 
     this.deleteAuthor = this.deleteAuthor.bind(this);
+    this.handleChange = this.handleChange.bind(this);
 
     this.state = {
-      authors: [],
-      books: []
+      authorObjects: [],
+      books: [],
+      authorNames: [],
+      filteredAuthorObjects: []
     };
   }
 
   componentDidMount() {
     let authorIdsWithBooks = [];
-    axios.get("http://localhost:3000/authors/").then(res => {
-      this.setState({ authors: res.data });
-    });
+    let authorNamesArr = [];
+    axios
+      .get("http://localhost:3000/authors/")
+      .then(res => {
+        this.setState({
+          authorObjects: res.data,
+          filteredAuthorObjects: res.data
+        });
+      })
+      .then(this.setState({ authorNames: authorNamesArr }));
+
     axios
       .get("http://localhost:3000/books/")
       .then(res => {
@@ -34,13 +45,15 @@ class AuthorsView extends Component {
       axios.delete("http://localhost:3000/authors/" + id);
 
       this.setState({
-        authors: this.state.authors.filter(author => author._id !== id)
+        filteredAuthorObjects: this.state.filteredAuthorObjects.filter(
+          author => author._id !== id
+        )
       });
     }
   }
 
   authorList() {
-    return this.state.authors.map(currentAuthor => {
+    return this.state.filteredAuthorObjects.map(currentAuthor => {
       return (
         <AuthorTable
           author={currentAuthor}
@@ -51,14 +64,39 @@ class AuthorsView extends Component {
     });
   }
 
+  handleChange(e) {
+    let copyOfAuthorList = [];
+    let filteredAuthors = [];
+
+    if (e.target.value !== "") {
+      // Copy author array
+      copyOfAuthorList = this.state.authorObjects.slice();
+
+      filteredAuthors = copyOfAuthorList.filter(obj => {
+        let caseInsensitiveInput = new RegExp(e.target.value, "i");
+        return obj.name.match(caseInsensitiveInput);
+      });
+    } else {
+      // If the search bar is empty, set filteredAuthors to original list of authors
+      filteredAuthors = this.state.authorObjects;
+    }
+
+    this.setState({
+      filteredAuthorObjects: filteredAuthors
+    });
+  }
+
   render() {
     return (
       <div>
         <h1>Search Authors</h1>
         <form>
           <label>Name: </label>
-          <input type="text" />
-          <button type="submit">Search</button>
+          <input
+            type="text"
+            onChange={this.handleChange}
+            placeholder="Search Authors"
+          />
         </form>
         <table>
           <thead>

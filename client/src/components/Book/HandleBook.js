@@ -171,17 +171,6 @@ class HandleBook extends Component {
         .then(res => console.log(res.data));
     }
 
-    // this.setState({
-    //   author: "",
-    //   title: "",
-    //   publishDate: new Date(),
-    //   unread: true,
-    //   pageCount: "",
-    //   cover: "",
-    //   coverImageType: "",
-    //   description: ""
-    // });
-
     window.location = "/";
   }
 

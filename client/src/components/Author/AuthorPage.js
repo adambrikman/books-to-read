@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import BookCover from "../utilities/BookCover";
+import LoadingScreen from "../utilities/LoadingScreen";
 
 class AuthorPage extends Component {
   constructor(props) {
@@ -43,6 +44,10 @@ class AuthorPage extends Component {
   }
 
   render() {
+    if (!this.state.books.length) {
+      return <LoadingScreen />;
+    }
+
     return (
       <div>
         <h1>Author Page</h1>

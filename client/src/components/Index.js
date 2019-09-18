@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import BookCover from "./utilities/BookCover";
+import LoadingScreen from "./utilities/LoadingScreen";
 
 class Index extends Component {
   constructor(props) {
@@ -24,6 +25,10 @@ class Index extends Component {
   }
 
   render() {
+    if (!this.state.books.length) {
+      return <LoadingScreen />;
+    }
+
     return (
       <div>
         <h1>Recently Added</h1>
