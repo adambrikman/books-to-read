@@ -1,0 +1,36 @@
+.loading-screen {
+  position: absolute;
+  left: 50%;
+  margin-left: -50px;
+  padding-top: 5rem;
+}
+
+.fa-refresh {
+  color: #673ab7;
+  font-size: 2.5em;
+}
+
+.fa-refresh::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.load-msg {
+  text-align: center;
+}
+
+body {
+  color: black;
+  box-sizing: border-box;
+}
+
+input::placeholder {
+  text-align: center;
+  color: black;
+}
+
+.book-icon {
+  padding: 10px;
+  margin-top: 20px;
+}

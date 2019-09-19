@@ -4,23 +4,72 @@ import { Link } from "react-router-dom";
 class Navbar extends Component {
   render() {
     return (
-      <nav className="navbar">
-        <Link to="/">BooksToRead</Link>
-        <ul>
+      <nav className="nav-wrapper deep-purple">
+        <div className="container">
+          <Link to="/" className="brand-logo">
+            BooksToRead
+          </Link>
+          <Link
+            to="#"
+            className="sidenav-trigger right"
+            data-target="mobile-links"
+          >
+            <i className="material-icons">menu</i>
+          </Link>
+          <ul className="right hide-on-med-and-down">
+            <li>
+              <Link to="/authors" className="waves-effect">
+                Authors
+              </Link>
+            </li>
+            <li>
+              <Link to="/authors/new" className="waves-effect">
+                Add Author
+              </Link>
+            </li>
+            <li>
+              <Link to="/books/unread" className="waves-effect">
+                Books To Read
+              </Link>
+            </li>
+            <li>
+              <Link to="/books/finished" className="waves-effect">
+                Finished Books
+              </Link>
+            </li>
+            <li>
+              <Link to="/books/new" className="waves-effect">
+                Add Book
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        <ul className="sidenav" id="mobile-links">
           <li>
-            <Link to="/authors">Authors</Link>
+            <Link to="/authors" className="waves-effect">
+              Authors
+            </Link>
           </li>
           <li>
-            <Link to="/authors/new">Add Author</Link>
+            <Link to="/authors/new" className="waves-effect">
+              Add Author
+            </Link>
           </li>
           <li>
-            <Link to="/books/unread">Books To Read</Link>
+            <Link to="/books/unread" className="waves-effect">
+              Books To Read
+            </Link>
           </li>
           <li>
-            <Link to="/books/finished">Finished Books</Link>
+            <Link to="/books/finished" className="waves-effect">
+              Finished Books
+            </Link>
           </li>
           <li>
-            <Link to="/books/new">Add Book</Link>
+            <Link to="/books/new" className="waves-effect">
+              Add Book
+            </Link>
           </li>
         </ul>
       </nav>

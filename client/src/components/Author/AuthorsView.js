@@ -88,22 +88,21 @@ class AuthorsView extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Search Authors</h1>
-        <form>
-          <label>Name: </label>
-          <input
-            type="text"
-            onChange={this.handleChange}
-            placeholder="Search Authors"
-          />
-        </form>
+      <div className="container">
+        <h3 className="center-align">Authors List</h3>
+        <div className="row">
+          <form className="col l4 offset-l4 m6 offset-m3 s8 offset-s2">
+            <div className="input-field">
+              <input
+                type="text"
+                name="searchAuthors"
+                onChange={this.handleChange}
+              />
+              <label htmlFor="searchAuthors">Search Authors </label>
+            </div>
+          </form>
+        </div>
         <table>
-          <thead>
-            <tr>
-              <th></th>
-            </tr>
-          </thead>
           <tbody>{this.authorList()}</tbody>
         </table>
       </div>

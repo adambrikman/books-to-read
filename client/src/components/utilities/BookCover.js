@@ -10,7 +10,7 @@ const arrayBufferToBase64 = buffer => {
 };
 
 const BookCover = props => (
-  <span>
+  <span className="book-icon">
     <Link to={"/books/" + props.currentBookCover._id}>
       <img
         height="150"

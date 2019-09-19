@@ -58,46 +58,67 @@ class HandleAuthor extends Component {
   }
 
   handlePageName() {
-    if (this.state.paramNumbers > 0) {
-      return <h1>Edit Author Name</h1>;
+    if (this.state.paramNumbers < 1) {
+      return <h3 className="center-align">Add an Author</h3>;
     } else {
-      return <h1>Add an Author</h1>;
-    }
-  }
-
-  cancelForm() {
-    if (this.state.paramNumbers > 0) {
-      return <Link to="/authors">Cancel</Link>;
-    } else {
-      return <Link to="/">Cancel</Link>;
+      return <h3 className="center-align">Edit Author Name</h3>;
     }
   }
 
   handleSubmitBtn() {
-    if (this.state.paramNumbers > 0) {
-      return <button type="submit">Edit Author</button>;
+    if (this.state.paramNumbers < 1) {
+      return (
+        <button type="submit" className="btn deep-purple">
+          Add Author
+        </button>
+      );
     } else {
-      return <button type="submit">Add Author</button>;
+      return (
+        <button type="submit" className="btn deep-purple">
+          Edit Author
+        </button>
+      );
+    }
+  }
+
+  cancelForm() {
+    if (this.state.paramNumbers < 1) {
+      return (
+        <Link to="/" className="btn red lighten-2">
+          Cancel
+        </Link>
+      );
+    } else {
+      return (
+        <Link to="/authors" className="btn red lighten-2">
+          Cancel
+        </Link>
+      );
     }
   }
 
   render() {
     return (
-      <div>
+      <div className="container">
         <div>{this.handlePageName()}</div>
 
         <form onSubmit={this.onSubmit}>
-          <label htmlFor="author">Name: </label>
-          <input
-            type="text"
-            name="author"
-            value={this.state.name}
-            onChange={this.onChangeName}
-            required
-          />
-          <div>
-            <span>{this.cancelForm()}</span>
-            <span>{this.handleSubmitBtn()}</span>
+          <div className="col l4 offset-l4 m6 offset-m3 s8 offset-s2">
+            <div className="input-field">
+              <input
+                type="text"
+                name="author"
+                value={this.state.name}
+                onChange={this.onChangeName}
+                required
+              />
+              <label htmlFor="author">Name</label>
+            </div>
+          </div>
+
+          <div className="row">
+            <span className="col m2 s3">{this.handleSubmitBtn()}</span>
+            <span className="col m2 s3">{this.cancelForm()}</span>
           </div>
         </form>
       </div>

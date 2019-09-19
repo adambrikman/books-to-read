@@ -44,7 +44,7 @@ class AuthorPage extends Component {
   }
 
   render() {
-    if (!this.state.books.length) {
+    if (!this.state.books.length || !this.state) {
       return <LoadingScreen />;
     }
 

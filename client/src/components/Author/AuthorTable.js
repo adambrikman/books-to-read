@@ -6,11 +6,21 @@ const AuthorTable = props => (
     <td>{props.author.name}</td>
 
     <td>
-      <Link to={"/authors/" + props.author._id}>View</Link>
+      <Link to={"/authors/" + props.author._id} className="btn blue lighten-2">
+        View
+      </Link>
       &nbsp;
-      <Link to={"/authors/edit/" + props.author._id}>Edit</Link>
+      <Link
+        to={"/authors/edit/" + props.author._id}
+        className="btn deep-purple lighten-2"
+      >
+        Edit
+      </Link>
       &nbsp;
-      <button onClick={() => props.deleteAuthor(props.author._id)}>
+      <button
+        onClick={() => props.deleteAuthor(props.author._id)}
+        className="btn red lighten-2"
+      >
         Delete
       </button>
     </td>

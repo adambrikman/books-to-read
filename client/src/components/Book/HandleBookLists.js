@@ -7,7 +7,7 @@ import LoadingScreen from "../utilities/LoadingScreen";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-class BooksToReadList extends Component {
+class HandleBookLists extends Component {
   constructor(props) {
     super(props);
 
@@ -19,18 +19,31 @@ class BooksToReadList extends Component {
       books: [],
       publishedBefore: new Date().setDate(new Date().getDate() + 1),
       publishedAfter: new Date(),
-      filteredBookName: []
+      filteredBookList: [],
+      earliestDate: new Date()
     };
   }
 
   componentDidMount() {
+    let booksArr = [];
+
     axios.get("http://localhost:3000/").then(res => {
-      this.setState({ books: res.data, filteredBookName: res.data });
+      this.setState({
+        books: res.data,
+        filteredBookList: res.data,
+        publishedAfter: new Date(res.data[0].publishDate).setDate(
+          new Date(res.data[0].publishDate).getDate() - 1
+        ),
+        earliestDate: new Date(res.data[0].publishDate).setDate(
+          new Date(res.data[0].publishDate).getDate() - 1
+        )
+      });
+      // Populate books array in state
     });
   }
 
   bookList() {
-    return this.state.filteredBookName.map(currentBook => {
+    return this.state.filteredBookList.map(currentBook => {
       if (
         currentBook.unread == true &&
         this.props.location.pathname == "/books/unread"
@@ -64,33 +77,33 @@ class BooksToReadList extends Component {
       filteredBooks = this.state.books;
     }
     this.setState({
-      filteredBookName: filteredBooks
+      filteredBookList: filteredBooks
     });
   }
 
-  // const dates = ["2018-09-12", "2018-10-18", "2018-12-30"];
-  // const filteredDates = dates.filter(d => new Date(d) - new Date() > 0);
+  onChangePublishedBefore(date) {
+    if (date < this.state.publishedAfter) {
+      this.setState({
+        publishedAfter: this.state.earliestDate
+      });
+    }
+    this.setState({
+      publishedBefore: date
+    });
 
-  filterPublishedBefore(date) {
-    let filteredBooks = [];
-    // Copy book array
     let copyOfBookList = this.state.books.slice();
 
-    filteredBooks = copyOfBookList.filter(obj => {
-      if (date > new Date(obj.publishDate)) {
-        console.log("ok");
+    let filteredBooks = copyOfBookList.filter(obj => {
+      if (
+        date > new Date(obj.publishDate) &&
+        new Date(obj.publishDate) > this.state.publishedAfter
+      ) {
         return obj;
       }
     });
 
     this.setState({
-      filteredBookName: filteredBooks
-    });
-  }
-
-  onChangePublishedBefore(date) {
-    this.setState({
-      publishedBefore: date
+      filteredBookList: filteredBooks
     });
   }
 
@@ -98,25 +111,39 @@ class BooksToReadList extends Component {
     this.setState({
       publishedAfter: date
     });
+
+    let copyOfBookList = this.state.books.slice();
+
+    let filteredBooks = copyOfBookList.filter(obj => {
+      if (
+        date < new Date(obj.publishDate) &&
+        new Date(obj.publishDate) < this.state.publishedBefore
+      ) {
+        return obj;
+      }
+    });
+
+    this.setState({
+      filteredBookList: filteredBooks
+    });
   }
 
-  // handleTitle() {}
+  handleTitle() {
+    if (this.props.location.pathname == "/books/unread") {
+      return <h1>Books to Read</h1>;
+    } else {
+      return <h1>Books I've Finished Reading!</h1>;
+    }
+  }
 
   render() {
-    if (this.state.books.length) {
-      // console.log(
-      //   new Date(this.state.publishedBefore) <
-      //     new Date(this.state.books[0].publishDate)
-      // );
-    }
-
     if (!this.state.books.length) {
       return <LoadingScreen />;
     }
 
     return (
       <div>
-        <h1>Books to Read</h1>
+        <div>{this.handleTitle()}</div>
         <h2>Search Books</h2>
         <div>
           <label>Title: </label>
@@ -128,19 +155,18 @@ class BooksToReadList extends Component {
         </div>
 
         <div>
-          <label>Published before: </label>
-          <DatePicker
-            selected={this.state.publishedBefore}
-            onChange={this.onChangePublishedBefore}
-            placeholderText="Enter Date"
-          />
-        </div>
-
-        <div>
           <label>Published after: </label>
           <DatePicker
             selected={this.state.publishedAfter}
             onChange={this.onChangePublishedAfter}
+          />
+        </div>
+
+        <div>
+          <label>Published on or before: </label>
+          <DatePicker
+            selected={this.state.publishedBefore}
+            onChange={this.onChangePublishedBefore}
           />
         </div>
 
@@ -150,4 +176,4 @@ class BooksToReadList extends Component {
   }
 }
 
-export default BooksToReadList;
+export default HandleBookLists;
