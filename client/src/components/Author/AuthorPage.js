@@ -26,9 +26,9 @@ class AuthorPage extends Component {
 
   booksByAuthorLabel() {
     if (this.state.books.length > 0) {
-      return <div>Books by Author:</div>;
+      return <div>Books by {this.state.author.name}:</div>;
     } else {
-      return <div>This author doesn't have any books yet!</div>;
+      return <div>{this.state.author.name} doesn't have any books yet!</div>;
     }
   }
 
@@ -49,18 +49,32 @@ class AuthorPage extends Component {
     }
 
     return (
-      <div>
-        <h1>Author Page</h1>
-        <div>Name: {this.state.author.name} </div>
+      <div className="container">
+        <h3 className="center-align">{this.state.author.name}'s Author Page</h3>
 
-        <Link to={"/authors/edit/" + this.state.author._id}>Edit</Link>
+        <div className="row">
+          <div className="col offset-l5 offset-m4 offset-s4">
+            <Link
+              to={"/authors/edit/" + this.state.author._id}
+              className="btn grey"
+            >
+              Edit
+            </Link>
+          </div>
+          <div className="col m1 s1">
+            <button
+              onClick={() => this.deleteAuthor(this.state.author._id)}
+              className="btn red lighten-2"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
 
-        <button onClick={() => this.deleteAuthor(this.state.author._id)}>
-          Delete
-        </button>
-
-        <div>{this.booksByAuthorLabel()}</div>
-        <div>{this.bookList()}</div>
+        <div className="center-align">
+          <h5>{this.booksByAuthorLabel()}</h5>
+          <div>{this.bookList()}</div>
+        </div>
       </div>
     );
   }

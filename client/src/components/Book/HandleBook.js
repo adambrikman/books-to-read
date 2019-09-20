@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import LoadingScreen from "../utilities/LoadingScreen";
 
 // DatePicker
 import DatePicker from "react-datepicker";
@@ -125,25 +126,44 @@ class HandleBook extends Component {
 
   cancelForm() {
     if (this.state.paramNumbers < 1) {
-      return <Link to={"/"}>Cancel</Link>;
+      return (
+        <Link to={"/"} className="btn red lighten-2">
+          Cancel
+        </Link>
+      );
     } else {
-      return <Link to={"/books/" + this.props.match.params.id}>Cancel</Link>;
+      return (
+        <Link
+          to={"/books/" + this.props.match.params.id}
+          className="btn red lighten-2"
+        >
+          Cancel
+        </Link>
+      );
     }
   }
 
   handlePageName() {
     if (this.state.paramNumbers < 1) {
-      return <h1>Add a book</h1>;
+      return <h3 className="center-align">Add a book</h3>;
     } else {
-      return <h1>Edit book</h1>;
+      return <h3 className="center-align">Edit book</h3>;
     }
   }
 
   handleSubmitBtn() {
     if (this.state.paramNumbers < 1) {
-      return <button type="submit">Add Book</button>;
+      return (
+        <button type="submit" className="btn deep-purple">
+          Add Book
+        </button>
+      );
     } else {
-      return <button type="submit">Edit Book</button>;
+      return (
+        <button type="submit" className="btn deep-purple">
+          Edit Book
+        </button>
+      );
     }
   }
 
@@ -175,108 +195,136 @@ class HandleBook extends Component {
   }
 
   render() {
+    if (!this.state.authors.length) {
+      return <LoadingScreen />;
+    }
+
     return (
-      <div>
+      <div className="container">
         <div>{this.handlePageName()}</div>
 
         <form onSubmit={this.onSubmit}>
-          <label>Title</label>
-          <div>
-            <input
-              type="text"
-              required
-              value={this.state.title}
-              onChange={this.onChangeTitle}
-            />
+          <div className="row">
+            <div className="input-field col l4 offset-l2 m5 offset-m1">
+              <input
+                type="text"
+                required
+                value={this.state.title}
+                onChange={this.onChangeTitle}
+                name="title"
+              />
+              <label htmlFor="title" className="active">
+                Title
+              </label>
+            </div>
+
+            <div className="input-field col l4 offset-l1 m5 offset-m1">
+              <input
+                type="number"
+                required
+                value={this.state.pageCount}
+                onChange={this.onChangePageCount}
+                name="pageCount"
+                min="1"
+              />
+              <label htmlFor="pageCount" className="active">
+                # of Pages
+              </label>
+            </div>
           </div>
 
-          <label>Author: </label>
-          <div>
-            <select
-              value={this.state.author}
-              onChange={this.onChangeAuthor}
-              required
-            >
-              {this.state.authors.map(function(name) {
-                return (
-                  <option key={name._id} value={name._id}>
-                    {name.name}
-                  </option>
-                );
-              })}
-            </select>
+          <div className="row">
+            <div className="col l4 offset-l2 m5 offset-m1">
+              <label>Author</label>
+              <select
+                selected
+                value={this.state.author}
+                onChange={this.onChangeAuthor}
+                className="browser-default"
+                required
+              >
+                {this.state.authors.map(function(name) {
+                  return (
+                    <option key={name._id} value={name._id}>
+                      {name.name}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+
+            <div className="col l2 offset-l1 m3 offset-m1">
+              <label>Need to read</label>
+              <select
+                value={this.state.unread}
+                onChange={this.onChangeUnread}
+                className="browser-default"
+                required
+              >
+                {this.state.booleans.map(function(bool) {
+                  return (
+                    <option key={bool.id} value={bool.id}>
+                      {bool.value}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
           </div>
 
-          <label>Date: </label>
-          <div>
-            <DatePicker
-              selected={this.state.publishDate}
-              onChange={this.onChangePublishDate}
-            />
+          <div className="row">
+            <div className="col l3 offset-l2 m4 offset-m1">
+              <div className="coverBox">
+                <label>Book Cover</label>
+                <FilePond
+                  stylePanelAspectRatio="1 / 1"
+                  imageResizeTargetWidth="100"
+                  imageResizeTargetHeight="150"
+                  onaddfile={(err, file) => {
+                    if (err) {
+                      console.error(err);
+                    }
+                    console.log(file);
+
+                    this.setState({
+                      cover: file.getFileEncodeBase64String(),
+                      coverImageType: file.fileType
+                    });
+                  }}
+                ></FilePond>
+              </div>
+            </div>
+
+            <div className="col l4 offset-l2 m6 offset-m1 s4">
+              <label>Date Published:</label>
+              <DatePicker
+                selected={this.state.publishDate}
+                onChange={this.onChangePublishDate}
+                className="second-font center-align"
+              />
+            </div>
           </div>
 
-          <label>Need to read</label>
-          <div>
-            <select
-              value={this.state.unread}
-              onChange={this.onChangeUnread}
-              required
-            >
-              {this.state.booleans.map(function(bool) {
-                return (
-                  <option key={bool.id} value={bool.id}>
-                    {bool.value}
-                  </option>
-                );
-              })}
-              ;
-            </select>
+          <div className="row">
+            <div className="input-field col l8 offset-l2 m10 offset-m1 s11 offset-s1">
+              <textarea
+                id="message"
+                className="materialize-textarea"
+                required
+                value={this.state.description}
+                onChange={this.onChangeDescription}
+              />
+              <label htmlFor="message" className="active">
+                Description:{" "}
+              </label>
+            </div>
           </div>
 
-          <label>Page Count</label>
-          <div>
-            <input
-              type="number"
-              min="1"
-              required
-              value={this.state.pageCount}
-              onChange={this.onChangePageCount}
-            />
-          </div>
-
-          <label>Cover</label>
-
-          <div>
-            <FilePond
-              stylePanelAspectRatio=".1 / 1"
-              imageResizeTargetWidth="100"
-              imageResizeTargetHeight="150"
-              onaddfile={(err, file) => {
-                if (err) {
-                  console.error(err);
-                }
-                console.log(file);
-
-                this.setState({
-                  cover: file.getFileEncodeBase64String(),
-                  coverImageType: file.fileType
-                });
-              }}
-            ></FilePond>
-          </div>
-
-          <label>Description: </label>
-          <div>
-            <textarea
-              required
-              value={this.state.description}
-              onChange={this.onChangeDescription}
-            />
-          </div>
-
-          <div>
-            <span>{this.cancelForm()}</span>
-            <span>{this.handleSubmitBtn()}</span>
+          <div className="row">
+            <div className="col l2 offset-l2 m3 offset-m2">
+              {this.handleSubmitBtn()}
+            </div>
+            <div className="m3">{this.cancelForm()}</div>
           </div>
         </form>
       </div>

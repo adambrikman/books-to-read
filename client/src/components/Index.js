@@ -30,9 +30,9 @@ class Index extends Component {
     }
 
     return (
-      <div>
-        <h1>Recently Added</h1>
-        <div>{this.bookList()}</div>
+      <div className="container">
+        <h3 className="center-align">Recently Added</h3>
+        <div className="center-align">{this.bookList()}</div>
       </div>
     );
   }

@@ -103,21 +103,27 @@ class HandleAuthor extends Component {
         <div>{this.handlePageName()}</div>
 
         <form onSubmit={this.onSubmit}>
-          <div className="col l4 offset-l4 m6 offset-m3 s8 offset-s2">
-            <div className="input-field">
-              <input
-                type="text"
-                name="author"
-                value={this.state.name}
-                onChange={this.onChangeName}
-                required
-              />
-              <label htmlFor="author">Name</label>
+          <div className="row">
+            <div className="col l4 offset-l4 m6 offset-m3 s8 offset-s2">
+              <div className="input-field">
+                <input
+                  type="text"
+                  name="author"
+                  value={this.state.name}
+                  onChange={this.onChangeName}
+                  required
+                />
+                <label htmlFor="author" className="active">
+                  Name
+                </label>
+              </div>
             </div>
           </div>
 
           <div className="row">
-            <span className="col m2 s3">{this.handleSubmitBtn()}</span>
+            <span className="col offset-l4 m2 offset-m3 s3 offset-s2">
+              {this.handleSubmitBtn()}
+            </span>
             <span className="col m2 s3">{this.cancelForm()}</span>
           </div>
         </form>

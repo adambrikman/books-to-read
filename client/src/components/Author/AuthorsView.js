@@ -89,7 +89,7 @@ class AuthorsView extends Component {
   render() {
     return (
       <div className="container">
-        <h3 className="center-align">Authors List</h3>
+        <h3 className="center-align">Author List</h3>
         <div className="row">
           <form className="col l4 offset-l4 m6 offset-m3 s8 offset-s2">
             <div className="input-field">
@@ -102,9 +102,11 @@ class AuthorsView extends Component {
             </div>
           </form>
         </div>
-        <table>
-          <tbody>{this.authorList()}</tbody>
-        </table>
+        <div className="row">
+          <table className="col l6 offset-l3 m8 offset-m2">
+            <tbody>{this.authorList()}</tbody>
+          </table>
+        </div>
       </div>
     );
   }

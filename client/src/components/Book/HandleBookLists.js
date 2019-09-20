@@ -25,8 +25,6 @@ class HandleBookLists extends Component {
   }
 
   componentDidMount() {
-    let booksArr = [];
-
     axios.get("http://localhost:3000/").then(res => {
       this.setState({
         books: res.data,
@@ -38,7 +36,6 @@ class HandleBookLists extends Component {
           new Date(res.data[0].publishDate).getDate() - 1
         )
       });
-      // Populate books array in state
     });
   }
 
@@ -130,9 +127,9 @@ class HandleBookLists extends Component {
 
   handleTitle() {
     if (this.props.location.pathname == "/books/unread") {
-      return <h1>Books to Read</h1>;
+      return <h3 className="center-align">Books to Read</h3>;
     } else {
-      return <h1>Books I've Finished Reading!</h1>;
+      return <h3 className="center-align">Books I've Finished!</h3>;
     }
   }
 
@@ -142,32 +139,36 @@ class HandleBookLists extends Component {
     }
 
     return (
-      <div>
+      <div className="container">
         <div>{this.handleTitle()}</div>
-        <h2>Search Books</h2>
-        <div>
-          <label>Title: </label>
-          <input
-            type="text"
-            onChange={this.handleChange}
-            placeholder="Search Titles"
-          />
-        </div>
 
-        <div>
-          <label>Published after: </label>
-          <DatePicker
-            selected={this.state.publishedAfter}
-            onChange={this.onChangePublishedAfter}
-          />
-        </div>
+        <div className="row">
+          <div className="input-field col l4 m3 s6 offset-s3">
+            <input
+              type="text"
+              name="search-titles"
+              onChange={this.handleChange}
+            />
+            <label htmlFor="search-titles">Search Titles</label>
+          </div>
 
-        <div>
-          <label>Published on or before: </label>
-          <DatePicker
-            selected={this.state.publishedBefore}
-            onChange={this.onChangePublishedBefore}
-          />
+          <div className="col l2 offset-l1 m3 offset-m1 offset-s2">
+            <label>Published after</label>
+            <DatePicker
+              selected={this.state.publishedAfter}
+              onChange={this.onChangePublishedAfter}
+              className="center-align second-font"
+            />
+          </div>
+
+          <div className="col l3 offset-l1 m4 offset-m1 offset-s2">
+            <label>Published on or before</label>
+            <DatePicker
+              selected={this.state.publishedBefore}
+              onChange={this.onChangePublishedBefore}
+              className="center-align second-font"
+            />
+          </div>
         </div>
 
         <div>{this.bookList()}</div>

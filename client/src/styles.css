@@ -1,8 +1,8 @@
 .loading-screen {
   position: absolute;
   left: 50%;
-  margin-left: -50px;
-  padding-top: 5rem;
+  margin-left: -10px;
+  padding-top: 8rem;
 }
 
 .fa-refresh {
@@ -23,6 +23,7 @@
 body {
   color: black;
   box-sizing: border-box;
+  font-family: "Playfair Display", serif;
 }
 
 input::placeholder {
@@ -33,4 +34,24 @@ input::placeholder {
 .book-icon {
   padding: 10px;
   margin-top: 20px;
+}
+
+.second-font,
+label,
+li,
+.btn,
+p,
+input,
+.input-field {
+  font-family: "Fauna One", serif;
+}
+
+.coverBox {
+  width: 200px;
+  height: 200px;
+  border-radius: 30px;
+}
+
+.filepond--drop-label {
+  background-color: #673ab7;
 }
