@@ -140,7 +140,7 @@ class HandleBookLists extends Component {
 
     return (
       <div className="container">
-        <div>{this.handleTitle()}</div>
+        <div className="title-padding">{this.handleTitle()}</div>
 
         <div className="row">
           <div className="input-field col l4 m3 s6 offset-s3">

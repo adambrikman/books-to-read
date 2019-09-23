@@ -100,7 +100,7 @@ class HandleAuthor extends Component {
   render() {
     return (
       <div className="container">
-        <div>{this.handlePageName()}</div>
+        <div className="title-padding">{this.handlePageName()}</div>
 
         <form onSubmit={this.onSubmit}>
           <div className="row">

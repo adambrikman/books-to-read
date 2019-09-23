@@ -201,7 +201,7 @@ class HandleBook extends Component {
 
     return (
       <div className="container">
-        <div>{this.handlePageName()}</div>
+        <div className="title-padding">{this.handlePageName()}</div>
 
         <form onSubmit={this.onSubmit}>
           <div className="row">
@@ -234,13 +234,13 @@ class HandleBook extends Component {
           </div>
 
           <div className="row">
-            <div className="col l4 offset-l2 m5 offset-m1">
+            <div className="col l4 offset-l2 m5 offset-m1 margin-bottom-med">
               <label>Author</label>
               <select
                 selected
                 value={this.state.author}
                 onChange={this.onChangeAuthor}
-                className="browser-default"
+                className="browser-default margin-top-small"
                 required
               >
                 {this.state.authors.map(function(name) {
@@ -258,7 +258,7 @@ class HandleBook extends Component {
               <select
                 value={this.state.unread}
                 onChange={this.onChangeUnread}
-                className="browser-default"
+                className="browser-default margin-top-small"
                 required
               >
                 {this.state.booleans.map(function(bool) {
@@ -273,7 +273,7 @@ class HandleBook extends Component {
           </div>
 
           <div className="row">
-            <div className="col l3 offset-l2 m4 offset-m1">
+            <div className="col l3 offset-l2 m4 offset-m1 margin-bottom-large">
               <div className="coverBox">
                 <label>Book Cover</label>
                 <FilePond

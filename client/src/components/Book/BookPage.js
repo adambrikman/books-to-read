@@ -31,7 +31,13 @@ class BookPage extends Component {
           key={this.state.book._id}
           currentBookCover={this.state.book}
         />
-        <p>Author: {this.state.book.author.name} </p>
+        <p>
+          Author:
+          <Link to={"/authors/" + this.state.book.author._id}>
+            &nbsp;
+            {this.state.book.author.name}
+          </Link>
+        </p>
         <p>
           Publish Date: {new Date(this.state.book.publishDate).toDateString()}{" "}
         </p>

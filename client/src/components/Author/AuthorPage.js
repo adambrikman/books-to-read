@@ -44,7 +44,7 @@ class AuthorPage extends Component {
   }
 
   render() {
-    if (!this.state.books.length || !this.state) {
+    if (typeof this.state.author.name == "undefined") {
       return <LoadingScreen />;
     }
 
@@ -56,7 +56,7 @@ class AuthorPage extends Component {
           <div className="col offset-l5 offset-m4 offset-s4">
             <Link
               to={"/authors/edit/" + this.state.author._id}
-              className="btn grey"
+              className="btn deep-purple"
             >
               Edit
             </Link>

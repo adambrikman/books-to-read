@@ -31,7 +31,7 @@ class Index extends Component {
 
     return (
       <div className="container">
-        <h3 className="center-align">Recently Added</h3>
+        <h3 className="center-align title-padding">Recently Added</h3>
         <div className="center-align">{this.bookList()}</div>
       </div>
     );

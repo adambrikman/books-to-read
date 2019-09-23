@@ -55,3 +55,23 @@ input,
 .filepond--drop-label {
   background-color: #673ab7;
 }
+
+.filepond--root {
+  margin-top: 1rem;
+}
+
+.title-padding {
+  padding-bottom: 1rem;
+}
+
+.margin-top-small {
+  margin-top: 1rem;
+}
+
+.margin-bottom-med {
+  margin-bottom: 1rem;
+}
+
+.margin-bottom-large {
+  margin-bottom: 3rem;
+}
