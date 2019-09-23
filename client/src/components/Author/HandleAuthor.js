@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
+import LoadingScreen from "../utilities/LoadingScreen";
 
 class HandleAuthor extends Component {
   constructor(props) {
@@ -12,7 +13,7 @@ class HandleAuthor extends Component {
     this.state = {
       name: "",
       paramNumbers: Object.keys(this.props.match.params).length,
-      redirectParam: ""
+      newAuthor: ""
     };
   }
 
@@ -40,18 +41,25 @@ class HandleAuthor extends Component {
       name: this.state.name
     };
 
+    // Check if URL contains an ID or not
     if (this.state.paramNumbers > 0) {
+      /* newAuthor variable utilized to re-render component 
+      for either addition or edit of author name */
+      this.setState({
+        newAuthor: ""
+      });
+
       axios
         .put(
           "http://localhost:3000/authors/edit/" + this.props.match.params.id,
           author
         )
-        .then(res => console.log(res.data));
+        .then(this.setState({ newAuthor: "No" }));
     } else {
       axios
         .post("http://localhost:3000/authors/new", author)
         .then(res => console.log(res.data))
-        .then(this.setState({ redirectParam: "/authors/" }));
+        .then(this.setState({ newAuthor: "Yes" }));
     }
 
     window.location = "/authors";
@@ -98,9 +106,13 @@ class HandleAuthor extends Component {
   }
 
   render() {
+    if (this.state.paramNumbers > 0 && this.state.name == "") {
+      return <LoadingScreen />;
+    }
+
     return (
       <div className="container">
-        <div className="title-padding">{this.handlePageName()}</div>
+        <div className="padding-bottom-small">{this.handlePageName()}</div>
 
         <form onSubmit={this.onSubmit}>
           <div className="row">

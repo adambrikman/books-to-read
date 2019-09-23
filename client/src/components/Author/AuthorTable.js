@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+let toastArr = [];
 
 const AuthorTable = props => (
   <tr>
@@ -15,7 +16,17 @@ const AuthorTable = props => (
       </Link>
       &nbsp;
       <button
-        onClick={() => props.deleteAuthor(props.author._id)}
+        onClick={() => {
+          if (
+            !toastArr.includes(props.author._id) &&
+            props.books.includes(props.author._id)
+          ) {
+            M.toast({ html: "Cannot Delete. Author still has books." });
+            toastArr.push(props.author._id);
+          } else {
+            props.deleteAuthor(props.author._id);
+          }
+        }}
         className="btn red lighten-2"
       >
         Delete

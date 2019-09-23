@@ -26,7 +26,11 @@ class AuthorPage extends Component {
 
   booksByAuthorLabel() {
     if (this.state.books.length > 0) {
-      return <div>Books by {this.state.author.name}:</div>;
+      return (
+        <div className="margin-bottom-med">
+          Books by {this.state.author.name}:
+        </div>
+      );
     } else {
       return <div>{this.state.author.name} doesn't have any books yet!</div>;
     }
@@ -50,23 +54,25 @@ class AuthorPage extends Component {
 
     return (
       <div className="container">
-        <h3 className="center-align">{this.state.author.name}'s Author Page</h3>
+        <h3 className="center-align padding-bottom-small">
+          {this.state.author.name}'s Author Page
+        </h3>
 
         <div className="row">
-          <div className="col offset-l5 offset-m4 offset-s4">
+          <div className="col offset-l4 offset-m3 offset-s2">
             <Link
               to={"/authors/edit/" + this.state.author._id}
               className="btn deep-purple"
             >
-              Edit
+              Edit Author
             </Link>
           </div>
-          <div className="col m1 s1">
+          <div className="col m4 s5 margin-bottom-small">
             <button
               onClick={() => this.deleteAuthor(this.state.author._id)}
               className="btn red lighten-2"
             >
-              Delete
+              Delete Author
             </button>
           </div>
         </div>

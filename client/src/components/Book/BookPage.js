@@ -43,7 +43,7 @@ class BookPage extends Component {
         </p>
         <p>Need to Read: {this.state.book.unread ? "Yes" : "No"} </p>
         <p>Page Count: {this.state.book.pageCount} </p>
-        <p>Description: {this.state.book.description} </p>
+        <p>Why I want to read it: {this.state.book.description} </p>
       </div>
     );
   }
@@ -62,7 +62,7 @@ class BookPage extends Component {
       <div>
         <div>{this.state.book && this.bookDetails()}</div>
         <div className="row">
-          <div className="col l1 offset-l5 m1 offset-m5 s1 offset-s4">
+          <div className="col offset-l5 offset-m5 s1 offset-s4">
             <Link
               to={"/books/edit/" + this.props.match.params.id}
               className="btn deep-purple"
@@ -70,7 +70,7 @@ class BookPage extends Component {
               Edit
             </Link>
           </div>
-          <div className="col pull-m1 offset-s1">
+          <div className="col m1 offset-s1">
             <button
               onClick={() => this.deleteAuthor(this.props.match.params.id)}
               className="btn red lighten-2"

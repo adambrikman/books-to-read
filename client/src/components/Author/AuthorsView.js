@@ -58,6 +58,7 @@ class AuthorsView extends Component {
         <AuthorTable
           author={currentAuthor}
           deleteAuthor={this.deleteAuthor}
+          books={this.state.books}
           key={currentAuthor._id}
         />
       );

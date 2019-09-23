@@ -8,30 +8,37 @@ class Index extends Component {
     super(props);
 
     this.state = {
-      books: []
+      books: [],
+      mounted: false
     };
   }
 
   componentDidMount() {
     axios.get("http://localhost:3000/").then(res => {
-      this.setState({ books: res.data });
+      this.setState({ books: res.data, mounted: true });
     });
   }
 
   bookList() {
-    return this.state.books.map(currentBook => {
-      return <BookCover key={currentBook._id} currentBookCover={currentBook} />;
-    });
+    if (this.state.books.length > 0) {
+      return this.state.books.map(currentBook => {
+        return (
+          <BookCover key={currentBook._id} currentBookCover={currentBook} />
+        );
+      });
+    } else {
+      return <div>There have not been any books uploaded yet!</div>;
+    }
   }
 
   render() {
-    if (!this.state.books.length) {
+    if (!this.state.mounted) {
       return <LoadingScreen />;
     }
 
     return (
       <div className="container">
-        <h3 className="center-align title-padding">Recently Added</h3>
+        <h3 className="center-align padding-bottom-small">Recently Added</h3>
         <div className="center-align">{this.bookList()}</div>
       </div>
     );

@@ -47,7 +47,8 @@ class HandleBook extends Component {
       description: "",
       authors: [],
       booleans: [{ value: "Yes", id: true }, { value: "No", id: false }],
-      paramNumbers: Object.keys(this.props.match.params).length
+      paramNumbers: Object.keys(this.props.match.params).length,
+      newBook: ""
     };
   }
 
@@ -181,17 +182,24 @@ class HandleBook extends Component {
     };
 
     if (this.state.paramNumbers < 1) {
-      axios.post("http://localhost:3000/books/new", book).then(res => res.data);
+      axios
+        .post("http://localhost:3000/books/new", book)
+        .then(res => res.data)
+        .then(this.setState({ newBook: "Yes" }));
+      window.location = "/authors/" + this.state.author;
     } else {
+      /* newBook variable utilized to re-render component 
+      for either addition or edit of book fields */
+
       axios
         .put(
           "http://localhost:3000/books/edit/" + this.props.match.params.id,
           book
         )
-        .then(res => console.log(res.data));
-    }
+        .then(this.setState({ newBook: "No" }));
 
-    window.location = "/";
+      window.location = "/books/" + this.props.match.params.id;
+    }
   }
 
   render() {
@@ -201,7 +209,7 @@ class HandleBook extends Component {
 
     return (
       <div className="container">
-        <div className="title-padding">{this.handlePageName()}</div>
+        <div className="padding-bottom-small">{this.handlePageName()}</div>
 
         <form onSubmit={this.onSubmit}>
           <div className="row">
@@ -234,7 +242,7 @@ class HandleBook extends Component {
           </div>
 
           <div className="row">
-            <div className="col l4 offset-l2 m5 offset-m1 margin-bottom-med">
+            <div className="col l4 offset-l2 m5 offset-m1 margin-bottom-small">
               <label>Author</label>
               <select
                 selected
@@ -306,7 +314,7 @@ class HandleBook extends Component {
           </div>
 
           <div className="row">
-            <div className="input-field col l8 offset-l2 m10 offset-m1 s11 offset-s1">
+            <div className="input-field col l8 offset-l2 m10 offset-m1 s12">
               <textarea
                 id="message"
                 className="materialize-textarea"
@@ -315,7 +323,7 @@ class HandleBook extends Component {
                 onChange={this.onChangeDescription}
               />
               <label htmlFor="message" className="active">
-                Description:{" "}
+                Why I want to read it:{" "}
               </label>
             </div>
           </div>

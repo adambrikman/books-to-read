@@ -20,43 +20,60 @@ class HandleBookLists extends Component {
       publishedBefore: new Date().setDate(new Date().getDate() + 1),
       publishedAfter: new Date(),
       filteredBookList: [],
-      earliestDate: new Date()
+      earliestDate: new Date(),
+      mounted: null
     };
   }
 
   componentDidMount() {
-    axios.get("http://localhost:3000/").then(res => {
-      this.setState({
-        books: res.data,
-        filteredBookList: res.data,
-        publishedAfter: new Date(res.data[0].publishDate).setDate(
-          new Date(res.data[0].publishDate).getDate() - 1
-        ),
-        earliestDate: new Date(res.data[0].publishDate).setDate(
-          new Date(res.data[0].publishDate).getDate() - 1
-        )
+    axios
+      .get("http://localhost:3000/")
+      .then(res => {
+        this.setState({
+          books: res.data,
+          filteredBookList: res.data,
+          publishedAfter: new Date(res.data[0].publishDate).setDate(
+            new Date(res.data[0].publishDate).getDate() - 1
+          ),
+          earliestDate: new Date(res.data[0].publishDate).setDate(
+            new Date(res.data[0].publishDate).getDate() - 1
+          ),
+          mounted: true
+        });
+      })
+      .catch(() => {
+        this.setState({
+          mounted: false
+        });
       });
-    });
   }
 
   bookList() {
-    return this.state.filteredBookList.map(currentBook => {
-      if (
-        currentBook.unread == true &&
-        this.props.location.pathname == "/books/unread"
-      ) {
-        return (
-          <BookCover key={currentBook._id} currentBookCover={currentBook} />
-        );
-      } else if (
-        currentBook.unread == false &&
-        this.props.location.pathname == "/books/finished"
-      ) {
-        return (
-          <BookCover key={currentBook._id} currentBookCover={currentBook} />
-        );
-      }
-    });
+    if (this.state.mounted) {
+      return this.state.filteredBookList.map(currentBook => {
+        if (
+          currentBook.unread == true &&
+          this.props.location.pathname == "/books/unread"
+        ) {
+          return (
+            <BookCover key={currentBook._id} currentBookCover={currentBook} />
+          );
+        } else if (
+          currentBook.unread == false &&
+          this.props.location.pathname == "/books/finished"
+        ) {
+          return (
+            <BookCover key={currentBook._id} currentBookCover={currentBook} />
+          );
+        }
+      });
+    } else {
+      return (
+        <div className="center-align">
+          There have not been any books uploaded yet!
+        </div>
+      );
+    }
   }
 
   handleChange(e) {
@@ -64,20 +81,23 @@ class HandleBookLists extends Component {
     // Copy book array
     let copyOfBookList = this.state.books.slice();
 
-    if (e.target.value !== "") {
-      filteredBooks = copyOfBookList.filter(obj => {
-        let caseInsensitiveInput = new RegExp(e.target.value, "i");
+    // Text filter via a RegEx for books within the current date range
+    filteredBooks = copyOfBookList.filter(obj => {
+      let caseInsensitiveInput = new RegExp(e.target.value, "i");
+      if (
+        new Date(obj.publishDate) > this.state.publishedAfter &&
+        new Date(obj.publishDate) < this.state.publishedBefore
+      ) {
         return obj.title.match(caseInsensitiveInput);
-      });
-    } else {
-      // If the search bar is empty, set filteredBooks to original list of books
-      filteredBooks = this.state.books;
-    }
+      }
+    });
+
     this.setState({
       filteredBookList: filteredBooks
     });
   }
 
+  // Functions to update the 'published before' & 'published after' date ranges
   onChangePublishedBefore(date) {
     if (date < this.state.publishedAfter) {
       this.setState({
@@ -125,6 +145,7 @@ class HandleBookLists extends Component {
     });
   }
 
+  // Update title of page based on pathName (in URL)
   handleTitle() {
     if (this.props.location.pathname == "/books/unread") {
       return <h3 className="center-align">Books to Read</h3>;
@@ -134,13 +155,13 @@ class HandleBookLists extends Component {
   }
 
   render() {
-    if (!this.state.books.length) {
+    if (typeof this.state.mounted == undefined) {
       return <LoadingScreen />;
     }
 
     return (
       <div className="container">
-        <div className="title-padding">{this.handleTitle()}</div>
+        <div className="padding-bottom-small">{this.handleTitle()}</div>
 
         <div className="row">
           <div className="input-field col l4 m3 s6 offset-s3">

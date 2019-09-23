@@ -7,7 +7,7 @@ class Navbar extends Component {
       <nav className="nav-wrapper deep-purple">
         <div className="container">
           <Link to="/" className="brand-logo">
-            BooksToRead
+            BooksToRead 📚
           </Link>
           <Link
             to="#"
