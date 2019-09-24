@@ -30,6 +30,13 @@ const db = mongoose.connection;
 db.on("error", err => console.error(err));
 db.once("open", () => console.log("Connected to Mongoose"));
 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/dist"));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+  });
+}
+
 // Define routes
 const indexRouter = require("./routes/index");
 const authorRouter = require("./routes/authors");
@@ -39,12 +46,5 @@ const bookRouter = require("./routes/books");
 app.use("/", indexRouter);
 app.use("/authors", authorRouter);
 app.use("/books", bookRouter);
-
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/dist"));
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
-  });
-}
 
 app.listen(process.env.PORT || 3000);
