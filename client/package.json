@@ -17,6 +17,7 @@
     "filepond": "^4.7.1",
     "filepond-plugin-file-encode": "^2.1.4",
     "filepond-plugin-image-preview": "^4.4.0",
+    "filepond-plugin-image-resize": "^2.0.4",
     "filepond-plugin-image-transform": "^3.4.3",
     "react": "^16.9.0",
     "react-datepicker": "^2.9.6",
