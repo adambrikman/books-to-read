@@ -34,20 +34,11 @@ app.use("/", indexRouter);
 app.use("/authors", authorRouter);
 app.use("/books", bookRouter);
 
-/* Build and deployment */
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/src", "index.html"));
-});
-
-// error handler
-app.use((err, req, res) => {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.json(err);
-});
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/client/dist")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "/client/dist", "index.html"));
+  });
+}
 
 app.listen(process.env.PORT || 3000);
