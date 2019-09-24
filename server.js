@@ -13,18 +13,18 @@ app.use(express.json({ limit: "10mb" }));
 app.use(cors());
 
 //Static file declaration
-app.use(express.static(path.join(__dirname, "client/build")));
+app.use(express.static(path.join(__dirname, "client/src")));
 //production mode
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "client/build")));
+  app.use(express.static(path.join(__dirname, "client/src")));
 
   app.get("*", (req, res) => {
-    res.sendfile(path.join((__dirname = "client/build/index.html")));
+    res.sendfile(path.join((__dirname = "client/src/index.html")));
   });
 }
 //build mode
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname + "/client/public/index.html"));
+  res.sendFile(path.join(__dirname + "/client/src/index.html"));
 });
 
 // Connect to Mongoose
