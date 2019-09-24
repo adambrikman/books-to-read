@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "installBackend": "npm install",
+    "client-install": "npm install --prefix client",
     "start": "node server.js",
-    "client": "cd client && npm run dev",
-    "install": "cd client && npm install && npm run start && cd ..",
-    "dev": "concurrently \"npm run start\" \"npm run client\""
+    "server": "nodemon server.js",
+    "client": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "engines": {
     "node": "12.8.0",
