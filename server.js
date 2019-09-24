@@ -5,11 +5,27 @@ if (process.env.NODE_ENV !== "production") {
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const path = require("path");
 
 // Middleware
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
 app.use(express.json({ limit: "10mb" }));
 app.use(cors());
+
+//Static file declaration
+app.use(express.static(path.join(__dirname, "client/build")));
+//production mode
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "client/build")));
+
+  app.get("*", (req, res) => {
+    res.sendfile(path.join((__dirname = "client/build/index.html")));
+  });
+}
+//build mode
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/client/public/index.html"));
+});
 
 // Connect to Mongoose
 const mongoose = require("mongoose");
