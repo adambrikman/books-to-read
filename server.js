@@ -1,6 +1,6 @@
-if (process.env.NODE_ENV !== "production") {
-  require("dotenv").config();
-}
+// if (process.env.NODE_ENV !== "production") {
+//   require("dotenv").config();
+// }
 
 const express = require("express");
 const app = express();
@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "client/src")));
 
   app.get("*", (req, res) => {
-    res.sendfile(path.join((__dirname = "client/src/index.html")));
+    res.sendFile(path.join((__dirname = "client/src/index.html")));
   });
 }
 //build mode
