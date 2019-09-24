@@ -12,17 +12,13 @@ app.use(express.urlencoded({ limit: "10mb", extended: true }));
 app.use(express.json({ limit: "10mb" }));
 app.use(cors());
 
-// process.env.MONGO_URI
 // Connect to Mongoose
 const mongoose = require("mongoose");
-mongoose.connect(
-  "mongodb+srv://user:LTLCSYSIOmetHfxP@bookstoread-y0tzd.mongodb.net/test?retryWrites=true&w=majority",
-  {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true
-  }
-);
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true
+});
 
 const db = mongoose.connection;
 db.on("error", err => console.error(err));
