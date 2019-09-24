@@ -8,8 +8,8 @@
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm run dev --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "dev": "concurrently \"npm run start\" \"npm run client\"",
+    "heroku-postbuild": "npm install --prefix client && npm run build --prefix client"
   },
   "engines": {
     "node": "12.8.0",
@@ -26,6 +26,7 @@
     "mongoose": "^5.7.0"
   },
   "devDependencies": {
+    "morgan": "^1.9.1",
     "nodemon": "^1.19.2"
   }
 }
