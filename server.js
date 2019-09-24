@@ -12,21 +12,6 @@ app.use(express.urlencoded({ limit: "10mb", extended: true }));
 app.use(express.json({ limit: "10mb" }));
 app.use(cors());
 
-//Static file declaration
-app.use(express.static(path.join(__dirname, "client/src")));
-//production mode
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "client/src")));
-
-  app.get("*", (req, res) => {
-    res.sendFile(path.join((__dirname = "client/src/index.html")));
-  });
-}
-//build mode
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname + "/client/src/index.html"));
-});
-
 // Connect to Mongoose
 const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGO_URI, {
@@ -48,5 +33,21 @@ const bookRouter = require("./routes/books");
 app.use("/", indexRouter);
 app.use("/authors", authorRouter);
 app.use("/books", bookRouter);
+
+/* Build and deployment */
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/src", "index.html"));
+});
+
+// error handler
+app.use((err, req, res) => {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get("env") === "development" ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.json(err);
+});
 
 app.listen(process.env.PORT || 3000);
