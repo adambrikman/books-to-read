@@ -24,17 +24,13 @@ const indexRouter = require("./routes/index");
 const authorRouter = require("./routes/authors");
 const bookRouter = require("./routes/books");
 
-// process.env.MONGO_URI
 // Connect to Mongoose
 const mongoose = require("mongoose");
-mongoose.connect(
-  "mongodb+srv://user:LTLCSYSIOmetHfxP@bookstoread-y0tzd.mongodb.net/test?retryWrites=true&w=majority",
-  {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true
-  }
-);
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true
+});
 
 const db = mongoose.connection;
 db.on("error", err => console.error(err));
