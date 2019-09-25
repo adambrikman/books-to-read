@@ -14,9 +14,15 @@ class Index extends Component {
   }
 
   componentDidMount() {
-    axios.get("http://localhost:3000/").then(res => {
-      this.setState({ books: res.data, mounted: true });
-    });
+    axios
+      .get("http://localhost:3000/home")
+      .then(res => {
+        console.log(res);
+        this.setState({ books: res.data, mounted: true });
+      })
+      .catch(e => {
+        console.log(e);
+      });
   }
 
   bookList() {
