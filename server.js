@@ -12,18 +12,6 @@ app.use(express.urlencoded({ limit: "10mb", extended: true }));
 app.use(express.json({ limit: "10mb" }));
 app.use(cors());
 
-// Connect to Mongoose
-const mongoose = require("mongoose");
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true
-});
-
-const db = mongoose.connection;
-db.on("error", err => console.error(err));
-db.once("open", () => console.log("Connected to Mongoose"));
-
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/dist"));
   app.get("*", (req, res) => {
@@ -35,6 +23,22 @@ if (process.env.NODE_ENV === "production") {
 const indexRouter = require("./routes/index");
 const authorRouter = require("./routes/authors");
 const bookRouter = require("./routes/books");
+
+// process.env.MONGO_URI
+// Connect to Mongoose
+const mongoose = require("mongoose");
+mongoose.connect(
+  "mongodb+srv://user:LTLCSYSIOmetHfxP@bookstoread-y0tzd.mongodb.net/test?retryWrites=true&w=majority",
+  {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true
+  }
+);
+
+const db = mongoose.connection;
+db.on("error", err => console.error(err));
+db.once("open", () => console.log("Connected to Mongoose"));
 
 // Utilize routes
 app.use("/", indexRouter);
