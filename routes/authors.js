@@ -3,7 +3,7 @@ const Author = require("../models/author");
 const Book = require("../models/book");
 
 // View all authors
-router.get("/", async (req, res) => {
+router.get("/all", async (req, res) => {
   const authors = await Author.find({});
   try {
     res.json(authors);
@@ -18,14 +18,13 @@ router.post("/new", async (req, res) => {
     const name = await req.body.name;
     const newAuthor = await new Author({ name });
     newAuthor.save();
-    res.json("Author added!");
   } catch {
     res.json("Error: Could not add author");
   }
 });
 
 // View individual author
-router.get("/:id", async (req, res) => {
+router.get("/single/:id", async (req, res) => {
   const author = await Author.findById(req.params.id);
   const books = await Book.find({ author: author.id })
     .limit(6)
@@ -60,7 +59,6 @@ router.put("/edit/:id", async (req, res) => {
     const author = await Author.findById(req.params.id);
     author.name = req.body.name;
     author.save();
-    res.json("Author updated!");
   } catch {
     res.json("Error: Could not update author");
   }

@@ -34,7 +34,7 @@ router.post("/new", async (req, res) => {
 });
 
 // View individual book
-router.get("/:id", async (req, res) => {
+router.get("/single/:id", async (req, res) => {
   const book = await Book.findById(req.params.id)
     .populate("author")
     .exec();
