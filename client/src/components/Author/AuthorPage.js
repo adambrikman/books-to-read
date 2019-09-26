@@ -15,7 +15,11 @@ class AuthorPage extends Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:3000/authors/" + this.props.match.params.id)
+      .get(
+        process.env.REACT_APP_BASE_URL +
+          "/authors/single/" +
+          this.props.match.params.id
+      )
       .then(res => {
         this.setState({
           author: res.data.author,
@@ -43,7 +47,7 @@ class AuthorPage extends Component {
   }
 
   deleteAuthor(id) {
-    axios.delete("http://localhost:3000/authors/" + id);
+    axios.delete(process.env.REACT_APP_BASE_URL + "/authors/" + id);
     return (window.location = "/authors");
   }
 

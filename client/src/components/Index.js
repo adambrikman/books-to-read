@@ -15,9 +15,8 @@ class Index extends Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:3000/home")
+      .get(process.env.REACT_APP_BASE_URL + "/home")
       .then(res => {
-        console.log(res);
         this.setState({ books: res.data, mounted: true });
       })
       .catch(e => {

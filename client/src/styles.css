@@ -93,3 +93,7 @@ input[type="text"]:not(.browser-default):focus:not([readonly]) {
   background-color: #e57373;
   color: white;
 }
+
+.book-field {
+  font-weight: bold;
+}

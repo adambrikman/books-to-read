@@ -6,7 +6,7 @@ class Navbar extends Component {
     return (
       <nav className="nav-wrapper deep-purple">
         <div className="container">
-          <Link to="/home" className="brand-logo">
+          <Link to="/" className="brand-logo">
             BooksToRead 📚
           </Link>
           <Link

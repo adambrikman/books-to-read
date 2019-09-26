@@ -15,7 +15,11 @@ class BookPage extends Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:3000/books/" + this.props.match.params.id)
+      .get(
+        process.env.REACT_APP_BASE_URL +
+          "/books/single/" +
+          this.props.match.params.id
+      )
       .then(res => {
         this.setState({
           book: res.data
@@ -32,24 +36,34 @@ class BookPage extends Component {
           currentBookCover={this.state.book}
         />
         <p>
-          Author:
+          <span className="book-field">Author:</span>
           <Link to={"/authors/" + this.state.book.author._id}>
             &nbsp;
             {this.state.book.author.name}
           </Link>
         </p>
         <p>
-          Publish Date: {new Date(this.state.book.publishDate).toDateString()}{" "}
+          <span className="book-field">Publish Date: </span>
+          {new Date(this.state.book.publishDate).toDateString()}
         </p>
-        <p>Need to Read: {this.state.book.unread ? "Yes" : "No"} </p>
-        <p>Page Count: {this.state.book.pageCount} </p>
-        <p>Why I want to read it: {this.state.book.description} </p>
+        <p>
+          <span className="book-field">Need to Read: </span>
+          {this.state.book.unread ? "Yes" : "No"}
+        </p>
+        <p>
+          <span className="book-field">Page Count: </span>
+          {this.state.book.pageCount}
+        </p>
+        <p>
+          <span className="book-field">Why I want to read it: </span>
+          {this.state.book.description}
+        </p>
       </div>
     );
   }
 
   deleteAuthor(id) {
-    axios.delete("http://localhost:3000/books/" + id);
+    axios.delete(process.env.REACT_APP_BASE_URL + "/books/" + id);
 
     window.location = "/";
   }

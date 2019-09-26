@@ -26,17 +26,27 @@ class HandleBookLists extends Component {
   }
 
   componentDidMount() {
+    let datesArr = [];
+    let sorted = [];
+
     axios
-      .get("http://localhost:3000/")
+      .get(process.env.REACT_APP_BASE_URL + "/home")
       .then(res => {
+        // Map dates of all books to datesArr, then sort, to find the earliest date
+        res.data.map(x => {
+          datesArr.push(new Date(x.publishDate).toISOString());
+        });
+        // Sort
+        sorted = datesArr.sort();
+
         this.setState({
           books: res.data,
           filteredBookList: res.data,
-          publishedAfter: new Date(res.data[0].publishDate).setDate(
-            new Date(res.data[0].publishDate).getDate() - 1
+          publishedAfter: new Date(sorted[0]).setDate(
+            new Date(sorted[0]).getDate() - 1
           ),
-          earliestDate: new Date(res.data[0].publishDate).setDate(
-            new Date(res.data[0].publishDate).getDate() - 1
+          earliestDate: new Date(sorted[0]).setDate(
+            new Date(sorted[0]).getDate() - 1
           ),
           mounted: true
         });
@@ -48,6 +58,7 @@ class HandleBookLists extends Component {
       });
   }
 
+  // Populate page with books based on 'unread' or 'finished' status
   bookList() {
     if (this.state.mounted) {
       return this.state.filteredBookList.map(currentBook => {
@@ -76,8 +87,10 @@ class HandleBookLists extends Component {
     }
   }
 
+  // Search book titles via text
   handleChange(e) {
     let filteredBooks = [];
+
     // Copy book array
     let copyOfBookList = this.state.books.slice();
 

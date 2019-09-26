@@ -19,7 +19,7 @@ function App() {
       <Navbar />
       <br />
       <Switch>
-        <Route path="/home" exact component={Index} />
+        <Route path="/" exact component={Index} />
         )}
         <Route path="/authors" exact component={AuthorsView} />
         <Route

@@ -21,7 +21,7 @@ class AuthorsView extends Component {
     let authorIdsWithBooks = [];
     let authorNamesArr = [];
     axios
-      .get("http://localhost:3000/authors/")
+      .get(process.env.REACT_APP_BASE_URL + "/authors/all")
       .then(res => {
         this.setState({
           authorObjects: res.data,
@@ -31,7 +31,7 @@ class AuthorsView extends Component {
       .then(this.setState({ authorNames: authorNamesArr }));
 
     axios
-      .get("http://localhost:3000/books/")
+      .get(process.env.REACT_APP_BASE_URL + "/books/")
       .then(res => {
         res.data.map(authorBook => {
           authorIdsWithBooks.push(authorBook.author);
@@ -42,7 +42,7 @@ class AuthorsView extends Component {
 
   deleteAuthor(id) {
     if (!this.state.books.includes(id)) {
-      axios.delete("http://localhost:3000/authors/" + id);
+      axios.delete(process.env.REACT_APP_BASE_URL + "/authors/" + id);
 
       this.setState({
         filteredAuthorObjects: this.state.filteredAuthorObjects.filter(

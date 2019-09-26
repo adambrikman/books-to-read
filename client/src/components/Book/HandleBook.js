@@ -54,7 +54,7 @@ class HandleBook extends Component {
 
   componentDidMount() {
     if (this.state.paramNumbers < 1) {
-      axios.get("http://localhost:3000/authors/").then(res => {
+      axios.get(process.env.REACT_APP_BASE_URL + "/authors/all").then(res => {
         if (res.data.length > 0) {
           this.setState({
             authors: res.data,
@@ -63,7 +63,7 @@ class HandleBook extends Component {
         }
       });
     } else {
-      axios.get("http://localhost:3000/authors/").then(res => {
+      axios.get(process.env.REACT_APP_BASE_URL + "/authors/all").then(res => {
         if (res.data.length > 0) {
           this.setState({
             authors: res.data,
@@ -72,7 +72,11 @@ class HandleBook extends Component {
         }
       });
       axios
-        .get("http://localhost:3000/books/" + this.props.match.params.id)
+        .get(
+          process.env.REACT_APP_BASE_URL +
+            "/books/single/" +
+            this.props.match.params.id
+        )
         .then(res => {
           if (res.data) {
             this.setState({
@@ -183,7 +187,7 @@ class HandleBook extends Component {
 
     if (this.state.paramNumbers < 1) {
       axios
-        .post("http://localhost:3000/books/new", book)
+        .post(process.env.REACT_APP_BASE_URL + "/books/new", book)
         .then(res => res.data)
         .then(this.setState({ newBook: "Yes" }));
       window.location = "/authors/" + this.state.author;
@@ -193,7 +197,9 @@ class HandleBook extends Component {
 
       axios
         .put(
-          "http://localhost:3000/books/edit/" + this.props.match.params.id,
+          process.env.REACT_APP_BASE_URL +
+            "/books/edit/" +
+            this.props.match.params.id,
           book
         )
         .then(this.setState({ newBook: "No" }));
@@ -245,7 +251,6 @@ class HandleBook extends Component {
             <div className="col l4 offset-l2 m5 offset-m1 margin-bottom-small">
               <label>Author</label>
               <select
-                selected
                 value={this.state.author}
                 onChange={this.onChangeAuthor}
                 className="browser-default margin-top-small"

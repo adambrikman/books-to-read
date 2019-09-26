@@ -20,7 +20,11 @@ class HandleAuthor extends Component {
   componentDidMount() {
     if (this.state.paramNumbers > 0) {
       axios
-        .get("http://localhost:3000/authors/" + this.props.match.params.id)
+        .get(
+          process.env.REACT_APP_BASE_URL +
+            "/authors/single/" +
+            this.props.match.params.id
+        )
         .then(res => {
           this.setState({
             name: res.data.author.name
@@ -37,6 +41,7 @@ class HandleAuthor extends Component {
 
   onSubmit(e) {
     e.preventDefault();
+
     const author = {
       name: this.state.name
     };
@@ -51,17 +56,17 @@ class HandleAuthor extends Component {
 
       axios
         .put(
-          "http://localhost:3000/authors/edit/" + this.props.match.params.id,
+          process.env.REACT_APP_BASE_URL +
+            "authors/edit/" +
+            this.props.match.params.id,
           author
         )
         .then(this.setState({ newAuthor: "No" }));
     } else {
       axios
-        .post("http://localhost:3000/authors/new", author)
-        .then(res => console.log(res.data))
+        .post(process.env.REACT_APP_BASE_URL + "/authors/new", author)
         .then(this.setState({ newAuthor: "Yes" }));
     }
-
     window.location = "/authors";
   }
 
