@@ -64,7 +64,7 @@ class HandleAuthor extends Component {
         .then(this.setState({ newAuthor: "No" }));
     } else {
       axios
-        .post(process.env.REACT_APP_BASE_URL + "authors/new", author)
+        .post(process.env.REACT_APP_BASE_URL + "/authors/new", author)
         .then(this.setState({ newAuthor: "Yes" }));
     }
     window.location = "/authors";
