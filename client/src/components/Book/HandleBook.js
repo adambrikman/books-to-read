@@ -292,7 +292,11 @@ class HandleBook extends Component {
                   stylePanelAspectRatio="1 / 1"
                   imageResizeTargetWidth="100"
                   imageResizeTargetHeight="150"
-                  onaddfile={file => {
+                  onaddfile={(err, file) => {
+                    if (err) {
+                      console.error(err);
+                    }
+
                     this.setState({
                       cover: file.getFileEncodeBase64String(),
                       coverImageType: file.fileType
