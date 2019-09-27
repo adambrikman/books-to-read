@@ -15,6 +15,7 @@ const BookCover = props => (
       <img
         height="150"
         width="100"
+        alt="book cover"
         src={
           "data:image/jpeg;base64," +
           arrayBufferToBase64(props.currentBookCover.coverImage.data)

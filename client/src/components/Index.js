@@ -13,6 +13,7 @@ class Index extends Component {
     };
   }
 
+  // Populate state with book data
   componentDidMount() {
     axios
       .get(process.env.REACT_APP_BASE_URL + "/home")
@@ -24,6 +25,7 @@ class Index extends Component {
       });
   }
 
+  // Add book covers to page
   bookList() {
     if (this.state.books.length > 0) {
       return this.state.books.map(currentBook => {

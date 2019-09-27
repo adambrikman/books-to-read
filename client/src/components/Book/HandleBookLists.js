@@ -25,10 +25,12 @@ class HandleBookLists extends Component {
     };
   }
 
+  // Populate state with book data, as well as the earliest publish date of all books in the DB
   componentDidMount() {
     let datesArr = [];
     let sorted = [];
 
+    // Update state with book data
     axios
       .get(process.env.REACT_APP_BASE_URL + "/home")
       .then(res => {
@@ -110,7 +112,7 @@ class HandleBookLists extends Component {
     });
   }
 
-  // Functions to update the 'published before' & 'published after' date ranges
+  /* Functions to update the 'published before' & 'published after' date ranges */
   onChangePublishedBefore(date) {
     if (date < this.state.publishedAfter) {
       this.setState({
@@ -163,7 +165,7 @@ class HandleBookLists extends Component {
     if (this.props.location.pathname == "/books/unread") {
       return <h3 className="center-align">Books to Read</h3>;
     } else {
-      return <h3 className="center-align">Books I've Finished!</h3>;
+      return <h3 className="center-align">Books I&apos;ve Finished!</h3>;
     }
   }
 

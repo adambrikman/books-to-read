@@ -52,25 +52,18 @@ class HandleBook extends Component {
     };
   }
 
+  // Populate state with book data & array of authors to populate form dropdown
   componentDidMount() {
-    if (this.state.paramNumbers < 1) {
-      axios.get(process.env.REACT_APP_BASE_URL + "/authors/all").then(res => {
-        if (res.data.length > 0) {
-          this.setState({
-            authors: res.data,
-            author: res.data[0]._id
-          });
-        }
-      });
-    } else {
-      axios.get(process.env.REACT_APP_BASE_URL + "/authors/all").then(res => {
-        if (res.data.length > 0) {
-          this.setState({
-            authors: res.data,
-            author: res.data[0]._id
-          });
-        }
-      });
+    // Get all authors for the dropdown in the add/edit book form
+    axios.get(process.env.REACT_APP_BASE_URL + "/authors/all").then(res => {
+      if (res.data.length > 0) {
+        this.setState({
+          authors: res.data,
+          author: res.data[0]._id
+        });
+      }
+    });
+    if (this.state.paramNumbers > 0) {
       axios
         .get(
           process.env.REACT_APP_BASE_URL +
@@ -129,24 +122,9 @@ class HandleBook extends Component {
     });
   }
 
-  cancelForm() {
-    if (this.state.paramNumbers < 1) {
-      return (
-        <Link to={"/"} className="btn red lighten-2">
-          Cancel
-        </Link>
-      );
-    } else {
-      return (
-        <Link
-          to={"/books/" + this.props.match.params.id}
-          className="btn red lighten-2"
-        >
-          Cancel
-        </Link>
-      );
-    }
-  }
+  /* The following three functions render page name, submit button
+  and cancel Link ('redirection') based on whether or not the URL
+  contains an ID (editing author) */
 
   handlePageName() {
     if (this.state.paramNumbers < 1) {
@@ -172,6 +150,25 @@ class HandleBook extends Component {
     }
   }
 
+  cancelForm() {
+    if (this.state.paramNumbers < 1) {
+      return (
+        <Link to={"/"} className="btn red lighten-2">
+          Cancel
+        </Link>
+      );
+    } else {
+      return (
+        <Link
+          to={"/books/" + this.props.match.params.id}
+          className="btn red lighten-2"
+        >
+          Cancel
+        </Link>
+      );
+    }
+  }
+
   onSubmit(e) {
     e.preventDefault();
     const book = {
@@ -185,6 +182,7 @@ class HandleBook extends Component {
       description: this.state.description
     };
 
+    // Axios requests to update/post data depending on whether URL contains an ID
     if (this.state.paramNumbers < 1) {
       axios
         .post(process.env.REACT_APP_BASE_URL + "/books/new", book)
@@ -252,7 +250,7 @@ class HandleBook extends Component {
               <label>Author</label>
               <select
                 value={this.state.author}
-                onChange={this.onChangeAuthor}
+                onBlur={this.onChangeAuthor}
                 className="browser-default margin-top-small"
                 required
               >
@@ -270,7 +268,7 @@ class HandleBook extends Component {
               <label>Need to read</label>
               <select
                 value={this.state.unread}
-                onChange={this.onChangeUnread}
+                onBlur={this.onChangeUnread}
                 className="browser-default margin-top-small"
                 required
               >
@@ -293,12 +291,7 @@ class HandleBook extends Component {
                   stylePanelAspectRatio="1 / 1"
                   imageResizeTargetWidth="100"
                   imageResizeTargetHeight="150"
-                  onaddfile={(err, file) => {
-                    if (err) {
-                      console.error(err);
-                    }
-                    console.log(file);
-
+                  onaddfile={file => {
                     this.setState({
                       cover: file.getFileEncodeBase64String(),
                       coverImageType: file.fileType

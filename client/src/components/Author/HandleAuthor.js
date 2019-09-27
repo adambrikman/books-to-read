@@ -17,6 +17,8 @@ class HandleAuthor extends Component {
     };
   }
 
+  /* If URL contains an ID, we're editing a name, so populate
+     the name field with the authors name. */
   componentDidMount() {
     if (this.state.paramNumbers > 0) {
       axios
@@ -46,9 +48,10 @@ class HandleAuthor extends Component {
       name: this.state.name
     };
 
-    // Check if URL contains an ID or not
+    /* If URL contains an ID, update name. Otherwise,
+       send post request to add new name to DB */
     if (this.state.paramNumbers > 0) {
-      /* newAuthor variable utilized to re-render component 
+      /* newAuthor state variable utilized to re-render component 
       for either addition or edit of author name */
       this.setState({
         newAuthor: ""
@@ -57,7 +60,7 @@ class HandleAuthor extends Component {
       axios
         .put(
           process.env.REACT_APP_BASE_URL +
-            "authors/edit/" +
+            "/authors/edit/" +
             this.props.match.params.id,
           author
         )
@@ -69,6 +72,10 @@ class HandleAuthor extends Component {
     }
     window.location = "/authors";
   }
+
+  /* The following three functions render page name, submit button
+  and cancel Link ('redirection') based on whether or not the URL
+  contains an ID (editing author) */
 
   handlePageName() {
     if (this.state.paramNumbers < 1) {

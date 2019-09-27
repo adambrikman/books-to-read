@@ -1,5 +1,7 @@
 import React from "react";
 
+/* Functional component to render a loading screen, 
+   which is utilized to do delay in async requests */
 const LoadingScreen = () => {
   return (
     <div className="container">

@@ -20,7 +20,7 @@ function App() {
       <br />
       <Switch>
         <Route path="/" exact component={Index} />
-        )}
+
         <Route path="/authors" exact component={AuthorsView} />
         <Route
           path="/authors/new"

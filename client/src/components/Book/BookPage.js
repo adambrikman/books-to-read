@@ -13,6 +13,7 @@ class BookPage extends Component {
     };
   }
 
+  // Populate state with book data
   componentDidMount() {
     axios
       .get(

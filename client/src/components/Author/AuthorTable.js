@@ -2,6 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 let toastArr = [];
 
+/* Functional component which:
+  1. displays row consisting of Author name, view Link, edit Link & delete button
+  2. Contains the functionality of the Toast error message for deletes.
+ */
 const AuthorTable = props => (
   <tr>
     <td>{props.author.name}</td>

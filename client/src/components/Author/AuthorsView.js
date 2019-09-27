@@ -20,6 +20,8 @@ class AuthorsView extends Component {
   componentDidMount() {
     let authorIdsWithBooks = [];
     let authorNamesArr = [];
+
+    // Get list of all authors to be displayed on component
     axios
       .get(process.env.REACT_APP_BASE_URL + "/authors/all")
       .then(res => {
@@ -30,6 +32,10 @@ class AuthorsView extends Component {
       })
       .then(this.setState({ authorNames: authorNamesArr }));
 
+    /* 
+       Get all author ID's from all books and use this array of
+       id's to prevent prevent deletion of an author if they have
+       a book in the DB. */
     axios
       .get(process.env.REACT_APP_BASE_URL + "/books/")
       .then(res => {
@@ -65,6 +71,7 @@ class AuthorsView extends Component {
     });
   }
 
+  // Filter author names upon user input/search
   handleChange(e) {
     let copyOfAuthorList = [];
     let filteredAuthors = [];

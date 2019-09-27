@@ -14,6 +14,7 @@ class AuthorPage extends Component {
   }
 
   componentDidMount() {
+    // Populate AuthorPage
     axios
       .get(
         process.env.REACT_APP_BASE_URL +
@@ -28,6 +29,7 @@ class AuthorPage extends Component {
       });
   }
 
+  // Function to generate descriptive text on whether or not the author has books
   booksByAuthorLabel() {
     if (this.state.books.length > 0) {
       return (
@@ -36,10 +38,13 @@ class AuthorPage extends Component {
         </div>
       );
     } else {
-      return <div>{this.state.author.name} doesn't have any books yet!</div>;
+      return (
+        <div>{this.state.author.name} doesn&apos;t have any books yet!</div>
+      );
     }
   }
 
+  // Generate book covers to be displayed
   bookList() {
     return this.state.books.map(currentBook => {
       return <BookCover key={currentBook._id} currentBookCover={currentBook} />;
@@ -59,7 +64,7 @@ class AuthorPage extends Component {
     return (
       <div className="container">
         <h3 className="center-align padding-bottom-small">
-          {this.state.author.name}'s Author Page
+          {this.state.author.name}&apos;s Author Page
         </h3>
 
         <div className="row">
