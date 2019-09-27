@@ -249,6 +249,7 @@ class HandleBook extends Component {
             <div className="col l4 offset-l2 m5 offset-m1 margin-bottom-small">
               <label>Author</label>
               <select
+                selected
                 value={this.state.author}
                 onBlur={this.onChangeAuthor}
                 className="browser-default margin-top-small"
