@@ -55,15 +55,24 @@ class HandleBook extends Component {
   // Populate state with book data & array of authors to populate form dropdown
   componentDidMount() {
     // Get all authors for the dropdown in the add/edit book form
-    axios.get(process.env.REACT_APP_BASE_URL + "/authors/all").then(res => {
-      if (res.data.length > 0) {
-        this.setState({
-          authors: res.data,
-          author: res.data[0]._id
-        });
-      }
-    });
-    if (this.state.paramNumbers > 0) {
+    if (this.state.paramNumbers < 1) {
+      axios.get(process.env.REACT_APP_BASE_URL + "/authors/all").then(res => {
+        if (res.data.length > 0) {
+          this.setState({
+            authors: res.data,
+            author: res.data[0]._id
+          });
+        }
+      });
+    } else {
+      axios.get(process.env.REACT_APP_BASE_URL + "/authors/all").then(res => {
+        if (res.data.length > 0) {
+          this.setState({
+            authors: res.data,
+            author: res.data[0]._id
+          });
+        }
+      });
       axios
         .get(
           process.env.REACT_APP_BASE_URL +
