@@ -77,7 +77,7 @@ class BookPage extends Component {
       <div>
         <div>{this.state.book && this.bookDetails()}</div>
         <div className="row">
-          <div className="col offset-l5 offset-m5 s1 offset-s4">
+          <div className="col offset-l5 offset-m5 s1 offset-s3">
             <Link
               to={"/books/edit/" + this.props.match.params.id}
               className="btn deep-purple"
@@ -85,7 +85,7 @@ class BookPage extends Component {
               Edit
             </Link>
           </div>
-          <div className="col m1 offset-s1">
+          <div className="col m1 offset-s2">
             <button
               onClick={() => this.deleteAuthor(this.props.match.params.id)}
               className="btn red lighten-2"

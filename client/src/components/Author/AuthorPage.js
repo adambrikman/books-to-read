@@ -68,7 +68,7 @@ class AuthorPage extends Component {
         </h3>
 
         <div className="row">
-          <div className="col offset-l4 offset-m3 offset-s2">
+          <div className="col offset-l4 offset-m3 offset-s1">
             <Link
               to={"/authors/edit/" + this.state.author._id}
               className="btn deep-purple"
@@ -76,7 +76,7 @@ class AuthorPage extends Component {
               Edit Author
             </Link>
           </div>
-          <div className="col m4 s5 margin-bottom-small">
+          <div className="col m4 s3 margin-bottom-small">
             <button
               onClick={() => this.deleteAuthor(this.state.author._id)}
               className="btn red lighten-2"

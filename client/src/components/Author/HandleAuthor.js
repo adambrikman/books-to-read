@@ -148,7 +148,7 @@ class HandleAuthor extends Component {
             <span className="col offset-l4 m2 offset-m3 s3 offset-s2">
               {this.handleSubmitBtn()}
             </span>
-            <span className="col m2 s3">{this.cancelForm()}</span>
+            <span className="col m2 s3 offset-s1">{this.cancelForm()}</span>
           </div>
         </form>
       </div>
