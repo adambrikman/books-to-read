@@ -85,7 +85,7 @@ class BookPage extends Component {
               Edit
             </Link>
           </div>
-          <div className="col m1 offset-s2">
+          <div className="col l2 offset-m1 offset-s2">
             <button
               onClick={() => this.deleteAuthor(this.props.match.params.id)}
               className="btn red lighten-2"

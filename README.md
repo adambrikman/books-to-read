@@ -80,8 +80,8 @@ After an author has been added, the Add Book form will display with all of the r
 - Title
 - Number of pages
 - Author (dropdown)
-- Whether or not the book needs to be read (This permits users to use this app to simply keep track of all books already read)
-- Book cover (Drag and Drop of Browse functionality for book's cover image)
+- Whether or not the book needs to be read
+- Book cover (image upload)
 - Description of why the user wants to read the book.
 
 ### Books to Read
