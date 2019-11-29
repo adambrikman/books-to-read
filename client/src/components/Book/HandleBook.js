@@ -57,13 +57,10 @@ class HandleBook extends Component {
     // Get all authors for the dropdown in the add/edit book form
     axios.get(process.env.REACT_APP_BASE_URL + "/authors/all").then(res => {
       if (res.data.length > 0) {
-        // console.log(res.data)
         this.setState({
           authors: res.data,
           author: res.data[0]._id
         });
-        console.log(this.state.authors);
-        console.log(this.state.author);
       }
     });
     if (this.state.paramNumbers > 0) {
@@ -297,10 +294,6 @@ class HandleBook extends Component {
                   imageResizeTargetWidth="100"
                   imageResizeTargetHeight="150"
                   onaddfile={(err, file) => {
-                    if (err) {
-                      console.error(err);
-                    }
-
                     this.setState({
                       cover: file.getFileEncodeBase64String(),
                       coverImageType: file.fileType

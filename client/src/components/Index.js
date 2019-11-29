@@ -15,14 +15,9 @@ class Index extends Component {
 
   // Populate state with book data
   componentDidMount() {
-    axios
-      .get(process.env.REACT_APP_BASE_URL + "/home")
-      .then(res => {
-        this.setState({ books: res.data, mounted: true });
-      })
-      .catch(e => {
-        console.log(e);
-      });
+    axios.get(process.env.REACT_APP_BASE_URL + "/home").then(res => {
+      this.setState({ books: res.data, mounted: true });
+    });
   }
 
   // Add book covers to page
